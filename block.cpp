@@ -1,5 +1,5 @@
 #include "sha256.h"
-#include  "Transaction.cpp"
+#include "Transaction.cpp"
 #include <string>
 #include <iostream>
 #include <vector>
@@ -8,7 +8,7 @@ using namespace std;
 class Block{
 private:
     int index{};
-    // int nonce;
+    size_t nonce;
     string hash_code;
     string* prev_hash_code{};
     // string copy_prev_hash_code; // it is not safe te keep a copy of the code (it is better bc we do not need to generate the code again, but how?)
@@ -32,7 +32,7 @@ public:
             transact += transaction.get_data_as_string();
         }
 
-        return sha256( to_string(index) + transact + (*prev_hash_code) ); // missing the rest of members of data 
+        return sha256( to_string(index) + to_string(nonce) + transact + (*prev_hash_code) ); // missing the rest of members of data 
     }
 
     string get_hash_code(){
@@ -43,12 +43,31 @@ public:
         return (*prev_hash_code);
     }
 
+    size_t get_nonce() {
+        return nonce;
+    }
+
+    void set_nonce(size_t nonce){
+        this->nonce = nonce;
+    }
+
     bool is_valid(){
         return (hash_code == generate_hash_code());
     }
 
+    bool proof_of_work() {
+        // auto aux = this->generate_hash_code();
+        // cout << aux << endl;
+        return (this->generate_hash_code().substr(0, 3) == "000");
+    }
+
+    // bool is_full_transactions_capacity() {
+    //     return (transactions.size() == MAX_NUMBER_OF_TRANSACTIONS);
+    // }
+
     void short_display(){
         cout << "       Index:              " << index << endl;
+        cout << "       Nonce:              " << nonce << endl;
         cout << "       Hash code:          " << hash_code << endl;
         cout << "       Prev. hash code:    " << *prev_hash_code << endl;
     }

@@ -45,10 +45,18 @@ public:
         auto* latest_block_hash_code = new string(aux);
 
         // cout << index << " | " << latest_block_hash_code << endl;
-
         Block new_block(index, std::move(transactions), latest_block_hash_code);
+
+        size_t possible_nonce = 0;
+        new_block.set_nonce(possible_nonce);
+        while (!new_block.proof_of_work())
+        {
+            possible_nonce += 1;
+            new_block.set_nonce(possible_nonce);
+        }
         // new_block.short_display();
         chain.push_back(new_block);
+        display_block(new_block);
         size++;
     }
 
@@ -151,6 +159,16 @@ public:
             cout << "                                                    |" << endl;
             cout << "                                                    V" << endl;
         }
+    }
+
+    void display_block(Block block){
+        cout << " --------------------------------------------------------------------------------------------------" << endl;
+        cout << "|                                                                                                  |" << endl;
+                                block.short_display();    
+        cout << "|                                                                                                  |" << endl;
+        cout << " --------------------------------------------------------------------------------------------------" << endl;
+        cout << "                                                    |" << endl;
+        cout << "                                                    V" << endl;
     }
 
 
