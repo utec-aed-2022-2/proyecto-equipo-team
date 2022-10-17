@@ -71,7 +71,7 @@ public:
     bool proof_of_work() { // method: HashCash
         // auto aux = this->generate_hash_code();
         // cout << aux << endl;
-        return (this->generate_hash_code().substr(0, 3) == "000");
+        return (this->generate_hash_code().substr(0, 2) == "00");
     }
 
     // bool is_full_transactions_capacity() {
