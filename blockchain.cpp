@@ -1,4 +1,4 @@
-#include <vector> // delete
+#include <utility>
 #include "block.cpp"
 #include <iostream>
 #include <fstream>
@@ -16,7 +16,7 @@ private:
         Transaction transaction;
         transactions.push_back(transaction);
         auto* ptr = new string("0");
-        Block genesis(0, transactions, ptr); // index = 0 ; data = tra ; prev_hash_code = "0" | sha256("0") <?>
+        Block genesis(1, transactions, ptr); // index = 0 ; data = tra ; prev_hash_code = "0" | sha256("0") <?>
         return genesis;
     }
 public:
@@ -26,7 +26,7 @@ public:
         if(chain.is_empty()){
             Block genesis = generate_genesis();
             chain.push_back(genesis);
-            size = 1; //
+            size = 1; // deberia ser 1, pero como empezamos a contar desde 1, tenemos que añadir 1 al size para coordinar con los indices
         } else {
             cerr << "Error creating blockchain" << endl;
         }
@@ -43,9 +43,10 @@ public:
 
     void add_block(const ForwardList<Transaction>& transactions){ // if we use string or transaction here will depend on the implementation of transaction
         // Block new_block // here we create the new block
-        int index = (int)chain.size();
-        string aux = get_latest_block()->get_hash_code();
-        auto* latest_block_hash_code = new string(aux);
+        int index = size+1;
+//        string aux = get_latest_block()->get_hash_code();
+//        auto* latest_block_hash_code = new string(aux);
+        string* latest_block_hash_code = get_latest_block()->get_hash_code();
 
         // cout << index << " | " << latest_block_hash_code << endl;
         Block new_block(index, transactions, latest_block_hash_code);
@@ -65,12 +66,32 @@ public:
         size++;
     }
 
-//    bool is_chain_valid(){
-//        // implement our own iterator for our own vector
-//        // The idea here is to iterate over the chain asking if the current block is valid (Block has a method called is_valid() that compare the hash_code whit a new generation of a hash code)
-//        //  so if there are any changes somewhare on the chain we just return false, and maybe the index block
-//        return true;
-//    }
+    int is_chain_valid(){
+        // implement our own iterator for our own vector
+        // The idea here is to iterate over the chain asking if the current block is valid (Block has a method called is_valid() that compare the hash_code whit a new generation of a hash code)
+        //  so if there are any changes somewhere on the chain we just return false, and maybe the index block
+        int index_error = 0;
+        for(int i=1; i<=chain.size();i++){
+            if(!(chain[i].is_valid())){
+                cout << "THE CHAIN WAS ALTERED, FIXING BLOCKCHAIN... \n";
+                index_error = i;
+                break;
+            }
+        }
+        cout << "index error: " << index_error << endl;
+        return index_error;
+    }
+
+    void validate_chain(){
+        int index_error = is_chain_valid(); // index of block where error happened, if no error, then 0 is returned
+        if(index_error){
+            while(chain.size() > index_error) {
+                cout << "chain size" << chain.size() << endl;
+                chain.pop_back();
+                size--;
+            }
+        }
+    }
 
 
     void read_and_load_csv(const string& filename, char delim = ','){
@@ -153,8 +174,18 @@ public:
         }
     }
 
+    void display_genesis(){
+        cout << " --------------------------------------------------------------------------------------------------" << endl;
+        cout << "|                                                                                                  |" << endl;
+        chain[0].short_display();
+        cout << "|                                                                                                  |" << endl;
+        cout << " --------------------------------------------------------------------------------------------------" << endl;
+        cout << "                                                    |" << endl;
+        cout << "                                                    V" << endl;
+    }
+
     void display(){
-        cout << chain.size();
+        cout << "Size of chain: " << chain.size() << endl;
 
         for(int i=1; i<=chain.size();i++){
             cout << " --------------------------------------------------------------------------------------------------" << endl;
@@ -177,5 +208,37 @@ public:
         cout << "                                                    V" << endl;
     }
 
+    void modify_index(int block_index, int new_index){
+        Block to_modify = chain[block_index];
+        to_modify.index = new_index;
+        chain[block_index] = to_modify;
+    }
+
+    void modify_nonce(int block_index, int new_nonce){
+        Block to_modify = chain[block_index];
+        to_modify.nonce = new_nonce;
+        chain[block_index] = to_modify;
+    }
+
+    void modify_hashcode(int block_index, const string &new_hashcode){
+        Block to_modify = chain[block_index];
+        to_modify.hash_code = new_hashcode;
+        chain[block_index] = to_modify;
+    }
+
+    void modify_prev_hashcode(int block_index, const string &new_prev_hashcode){
+        Block to_modify = chain[block_index];
+        *(to_modify.prev_hash_code) = new_prev_hashcode;
+        chain[block_index] = to_modify;
+    }
+
+    void modify_transaction(int block_index, int index_transaction){
+        Block to_modify = chain[block_index];
+        cout << "\n\n" << endl;
+        Transaction new_transaction;
+        new_transaction.create_transaction();
+        to_modify.transactions[index_transaction] = new_transaction;
+        chain[block_index] = to_modify;
+    }
 
 };

@@ -15,6 +15,10 @@ struct Time{
         this->day = 0;
     }
 
+    void short_display(){
+        cout << year << " | " << month << " | " << day << " | ";
+    }
+
     void display() const{
         cout << "year: " << year << endl;
         cout << "month: " << month << endl;
@@ -72,6 +76,30 @@ struct Transaction{
         return (date.get_data_as_string() + to_string(open) + to_string(high) + to_string(lowest) + to_string(close) + to_string(volume) + to_string(close_time) + to_string(quote_asset_volume) + to_string(number_of_trades) + to_string(taker_buy_base_asset_volume) + to_string(taker_buy_quote_asset_volume));
     }
 
+    void create_transaction(){
+        Time new_date;
+        cout << "year: "; cin >> new_date.year;
+        cout << "month: "; cin >> new_date.month;
+        cout << "day: "; cin >> new_date.day;
+        date = new_date;
+        cout << "open: "; cin >> open;
+        cout << "high: "; cin >> high;
+        cout << "lowest: "; cin >> lowest;
+        cout << "close: "; cin >> close;
+        cout << "volume: "; cin >> volume;
+        cout << "close_time: "; cin >> close_time;
+        cout << "quote_asset_volume: "; cin >> quote_asset_volume;
+        cout << "number_of_trades: "; cin >> number_of_trades;
+        cout << "taker_buy_base_asset_volume: "; cin >> taker_buy_base_asset_volume;
+        cout << "taker_buy_quote_asset_volume: "; cin >> taker_buy_quote_asset_volume;
+        cout << endl;
+    }
+
+    void short_display(){
+        date.short_display();
+        cout << open << " | " << high << " | " << lowest << " | " << close << " | " << volume << " | " << close_time << " | " << number_of_trades << endl;
+    }
+
     void display(){
         date.display();
         cout << "open: " << open << endl;
@@ -88,3 +116,4 @@ struct Transaction{
     }
 
 };
+
