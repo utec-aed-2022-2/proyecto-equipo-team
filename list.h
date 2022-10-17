@@ -18,7 +18,7 @@ public:
     };
 
     virtual T front() = 0;
-    virtual T back() = 0;
+    virtual T* back() = 0;
     virtual void push_front(T)= 0;
     virtual void push_back(T) = 0;
     virtual T pop_front() = 0;

@@ -25,13 +25,13 @@ public:
         return this->head->data;
     }
 
-    T back(){
+    T* back(){
         Node<T>* temporal;
         temporal = this->head;
         while(temporal->next != nullptr){
             temporal = temporal->next;
         }
-        return temporal->data;
+        return &(temporal->data);
     }
 
     virtual void push_front(T data){

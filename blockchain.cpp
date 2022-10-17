@@ -1,6 +1,6 @@
+#include <vector> // delete
 #include "block.cpp"
 #include <iostream>
-#include <vector>
 #include <fstream>
 #include "forward.h"
 using namespace std;
@@ -20,10 +20,10 @@ private:
         return genesis;
     }
 public:
-    vector<Block> chain; // needs our own implementation of vector to allocate memory dynamically [TODO] (maybe a forward circular linked list)
+    ForwardList<Block> chain; // needs our own implementation of vector to allocate memory dynamically [TODO] (maybe a forward circular linked list)
 
     Blockchain(){
-        if(chain.empty()){
+        if(chain.is_empty()){
             Block genesis = generate_genesis();
             chain.push_back(genesis);
             size = 1; //
@@ -34,7 +34,7 @@ public:
 
     Block* get_latest_block(){ // important not to use copies
         if(size != 0){
-            return &chain.back();
+            return chain.back();
         } else {
             cerr << "Chain is empty" << endl;
             return nullptr;
@@ -43,7 +43,7 @@ public:
 
     void add_block(const ForwardList<Transaction>& transactions){ // if we use string or transaction here will depend on the implementation of transaction
         // Block new_block // here we create the new block
-        int index = (int)chain.size(); // this may change bc it depends on the implementation of the vector we use, we only need to get the next index in the chain.
+        int index = (int)chain.size();
         string aux = get_latest_block()->get_hash_code();
         auto* latest_block_hash_code = new string(aux);
 
@@ -65,12 +65,12 @@ public:
         size++;
     }
 
-    bool is_chain_valid(){
-        // implement our own iterator for our own vector
-        // The idea here is to iterate over the chain asking if the current block is valid (Block has a method called is_valid() that compare the hash_code whit a new generation of a hash code)
-        //  so if there are any changes somewhare on the chain we just return false, and maybe the index block
-        return true;
-    }
+//    bool is_chain_valid(){
+//        // implement our own iterator for our own vector
+//        // The idea here is to iterate over the chain asking if the current block is valid (Block has a method called is_valid() that compare the hash_code whit a new generation of a hash code)
+//        //  so if there are any changes somewhare on the chain we just return false, and maybe the index block
+//        return true;
+//    }
 
 
     void read_and_load_csv(const string& filename, char delim = ','){
@@ -155,10 +155,11 @@ public:
 
     void display(){
         cout << chain.size();
-        for(auto& block : chain){
+
+        for(int i=1; i<=chain.size();i++){
             cout << " --------------------------------------------------------------------------------------------------" << endl;
             cout << "|                                                                                                  |" << endl;
-            block.short_display();
+            chain[i].short_display();
             cout << "|                                                                                                  |" << endl;
             cout << " --------------------------------------------------------------------------------------------------" << endl;
             cout << "                                                    |" << endl;
@@ -178,11 +179,3 @@ public:
 
 
 };
-
-
-
-
-
-
-
-

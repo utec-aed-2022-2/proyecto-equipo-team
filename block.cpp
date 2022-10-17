@@ -49,8 +49,8 @@ public:
         return nonce;
     }
 
-    void set_nonce(size_t nonce){
-        this->nonce = nonce;
+    void set_nonce(size_t nonce_){
+        this->nonce = nonce_;
     }
 
     bool is_valid(){
