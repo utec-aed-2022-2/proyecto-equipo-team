@@ -2,24 +2,26 @@
 #include "Transaction.cpp"
 #include <string>
 #include <iostream>
-#include <vector>
+#include "forward.h"
 using namespace std;
 
 class Block{
 private:
     int index{};
-    size_t nonce;
+    size_t nonce{};
     string hash_code;
     string* prev_hash_code{};
     // string copy_prev_hash_code; // it is not safe te keep a copy of the code (it is better bc we do not need to generate the code again, but how?)
 public:
-    vector<Transaction> transactions;  //vector of transaction of fixed size
+//    vector<Transaction> transactions;  //vector of transaction of fixed size // prev
+    ForwardList<Transaction> transactions;
 
     Block() = default;
 
-    Block(int index, vector<Transaction> transactions, string* prev_hash_code){ // [this need to change when Transaction is fully implemented, we are assuming string for simplicity]
+//    Block(int index, vector<Transaction> transactions, string* prev_hash_code){ // [this need to change when Transaction is fully implemented, we are assuming string for simplicity]
+    Block(int index, const ForwardList<Transaction>& transactions, string* prev_hash_code){
         this->index = index;
-        this->transactions = std::move(transactions); 
+        this->transactions = transactions;
         this->prev_hash_code = prev_hash_code;
         this->hash_code = generate_hash_code();
     }
@@ -28,11 +30,11 @@ public:
         // implement our own hash structure, to transform our data into a hashed string we do not know about and use it as input for the sha256 [TODO]
         // smth like this -> return sha256( our_hash(index) + our_hash(data) + our_hash(prev_hash_code) )
         string transact;
-        for(auto & transaction : transactions){
-            transact += transaction.get_data_as_string();
+        for(int i=1; i<=transactions.size();i++){
+            transact += transactions[i].get_data_as_string();
         }
 
-        return sha256( to_string(index) + to_string(nonce) + transact + (*prev_hash_code) ); // missing the rest of members of data 
+        return sha256( to_string(index) + to_string(nonce) + transact + (*prev_hash_code) ); // missing the rest of members of data
     }
 
     string get_hash_code(){
@@ -43,7 +45,7 @@ public:
         return (*prev_hash_code);
     }
 
-    size_t get_nonce() {
+    size_t get_nonce() const {
         return nonce;
     }
 

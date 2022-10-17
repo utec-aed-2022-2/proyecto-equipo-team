@@ -1,6 +1,8 @@
-#include <vector> // delete
 #include "block.cpp"
 #include <iostream>
+#include <vector>
+#include <fstream>
+#include "forward.h"
 using namespace std;
 
 #define num_transaction_in_block 100
@@ -9,7 +11,8 @@ class Blockchain{
 private:
     int size;
     static Block generate_genesis(){ // index = 0
-        vector<Transaction> transactions; // calling default constructor and initializing variables
+//        vector<Transaction> transactions; // calling default constructor and initializing variables
+        ForwardList<Transaction> transactions;
         Transaction transaction;
         transactions.push_back(transaction);
         auto* ptr = new string("0");
@@ -38,17 +41,18 @@ public:
         }
     }
 
-    void add_block(vector<Transaction> transactions){ // if we use string or transaction here will depend on the implementation of transaction
+    void add_block(const ForwardList<Transaction>& transactions){ // if we use string or transaction here will depend on the implementation of transaction
         // Block new_block // here we create the new block
         int index = (int)chain.size(); // this may change bc it depends on the implementation of the vector we use, we only need to get the next index in the chain.
         string aux = get_latest_block()->get_hash_code();
         auto* latest_block_hash_code = new string(aux);
 
         // cout << index << " | " << latest_block_hash_code << endl;
-        Block new_block(index, std::move(transactions), latest_block_hash_code);
+        Block new_block(index, transactions, latest_block_hash_code);
 
         size_t possible_nonce = 0;
         new_block.set_nonce(possible_nonce);
+        cout << "mining..." << endl;
         while (!new_block.proof_of_work())
         {
             possible_nonce += 1;
@@ -56,6 +60,7 @@ public:
         }
         // new_block.short_display();
         chain.push_back(new_block);
+        cout << "mined!" << endl;
         display_block(new_block);
         size++;
     }
@@ -70,7 +75,7 @@ public:
 
     void read_and_load_csv(const string& filename, char delim = ','){
         // i need the delimeter and the newline character and the filename
-        vector<Transaction> transactions;
+        ForwardList<Transaction> transactions;
         ifstream file(filename);
 
         if(file.is_open()){
@@ -79,7 +84,7 @@ public:
             string line, field;
 
             getline(file, line); // getting the first line (it only has the column names)
-            
+
             while(getline(file, line)){ // getting data line by line
 
                 Transaction new_transaction;
@@ -88,38 +93,38 @@ public:
                 getline(ss, field, delim);
                 Time new_time(field);
                 new_transaction.date = new_time;
-                
+
                 int aux = 1;
                 while(getline(ss, field, delim)){ // getting the rest of data
                     switch(aux){
-                        case 1: 
+                        case 1:
                             new_transaction.open = stof(field);
                             break;
-                        case 2: 
+                        case 2:
                             new_transaction.high = stof(field);
                             break;
-                        case 3: 
+                        case 3:
                             new_transaction.lowest = stof(field);
                             break;
-                        case 4: 
+                        case 4:
                             new_transaction.close = stof(field);
                             break;
-                        case 5: 
+                        case 5:
                             new_transaction.volume = stof(field);
                             break;
-                        case 6: 
+                        case 6:
                             new_transaction.close_time = stod(field);
                             break;
-                        case 7: 
+                        case 7:
                             new_transaction.quote_asset_volume = stod(field);
                             break;
-                        case 8: 
+                        case 8:
                             new_transaction.number_of_trades = stoi(field);
                             break;
-                        case 9: 
+                        case 9:
                             new_transaction.taker_buy_base_asset_volume = stod(field);
                             break;
-                        case 10: 
+                        case 10:
                             new_transaction.taker_buy_quote_asset_volume = stod(field);
                             break;
                         default:
@@ -136,16 +141,16 @@ public:
                     number_of_transaction_read = 0;
                     add_block(transactions); // after this line, the block should be succesfully inserted in the blockchain
                     // delete <?>
-                    transactions.clear(); 
+                    transactions.clear();
                 }
             }
             add_block(transactions); // adding the last transaction that couldn't make it to fill a block
-            transactions.clear(); 
+            transactions.clear();
             // cout << chain.size();
             file.close();
         } else {
             cerr << "error while opening file (read_csv_innto_transaction)" << endl;
-        } 
+        }
     }
 
     void display(){
@@ -153,7 +158,7 @@ public:
         for(auto& block : chain){
             cout << " --------------------------------------------------------------------------------------------------" << endl;
             cout << "|                                                                                                  |" << endl;
-                                    block.short_display();    
+            block.short_display();
             cout << "|                                                                                                  |" << endl;
             cout << " --------------------------------------------------------------------------------------------------" << endl;
             cout << "                                                    |" << endl;
@@ -161,10 +166,10 @@ public:
         }
     }
 
-    void display_block(Block block){
+    static void display_block(Block block){
         cout << " --------------------------------------------------------------------------------------------------" << endl;
         cout << "|                                                                                                  |" << endl;
-                                block.short_display();    
+        block.short_display();
         cout << "|                                                                                                  |" << endl;
         cout << " --------------------------------------------------------------------------------------------------" << endl;
         cout << "                                                    |" << endl;
@@ -173,7 +178,6 @@ public:
 
 
 };
-
 
 
 

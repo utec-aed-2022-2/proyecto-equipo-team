@@ -1,8 +1,5 @@
-#include <ctime>
 #include <string>
-#include <fstream>
 #include <sstream>
-#include <vector>
 #include <iostream>
 using namespace std;
 
@@ -18,7 +15,7 @@ struct Time{
         this->day = 0;
     }
 
-    void display(){
+    void display() const{
         cout << "year: " << year << endl;
         cout << "month: " << month << endl;
         cout << "day: " << day << endl;
@@ -42,10 +39,10 @@ struct Time{
     }
 };
 
-struct Transaction{ 
+struct Transaction{
     Time date; //opening time (year, month, day) //bc we store data by day
     float open; // price in open time
-    float high; // highest price in the period (in that day in binance) 
+    float high; // highest price in the period (in that day in binance)
     float lowest; //lowest price in the period (in that day in binance)
     float close; // closing price
     float volume; // number of units traded in the market in that period (in that day in binance)
@@ -59,14 +56,14 @@ struct Transaction{
     Transaction(){ // onnly for genesis
         Time date_;
         date = date_;
-        open = 0; 
-        high = 0; 
-        lowest = 0; 
-        close = 0; 
-        volume = 0; 
-        close_time = 0; 
-        quote_asset_volume = 0; 
-        number_of_trades = 0; 
+        open = 0;
+        high = 0;
+        lowest = 0;
+        close = 0;
+        volume = 0;
+        close_time = 0;
+        quote_asset_volume = 0;
+        number_of_trades = 0;
         taker_buy_base_asset_volume = 0;
         taker_buy_quote_asset_volume = 0;
     }
@@ -86,7 +83,7 @@ struct Transaction{
         cout << "quote_asset_volume: " << quote_asset_volume << endl;
         cout << "number_of_trades: " << number_of_trades << endl;
         cout << "taker_buy_base_asset_volume: " << taker_buy_base_asset_volume << endl;
-        cout << "taker_buy_quote_asset_volume: " << taker_buy_quote_asset_volume << endl; 
+        cout << "taker_buy_quote_asset_volume: " << taker_buy_quote_asset_volume << endl;
         cout << endl;
     }
 
