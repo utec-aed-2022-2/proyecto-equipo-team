@@ -70,7 +70,7 @@ Las estructuras de datos implementadas por nuestra cuenta fueron las siguientes:
 
    ## Estrategia para asegurar integridad de su contenido
 
-   La clase bloque tiene un método ```c++ is_valid() ``` que compara si el código hash que tiene actualmente el bloque sería el mismo si se vuelve a generar el código hash (el cual toma en cuenta la información de todos los atributos de la clase bloque).
+   La clase bloque tiene un método ```is_valid() ``` que compara si el código hash que tiene actualmente el bloque sería el mismo si se vuelve a generar el código hash (el cual toma en cuenta la información de todos los atributos de la clase bloque).
 
    ## Proof of Work
 
