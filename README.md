@@ -78,11 +78,11 @@ Las estructuras de datos implementadas por nuestra cuenta fueron las siguientes:
 
    ## Dataset utilizado
 
-   El (dataset)[https://www.kaggle.com/datasets/skanderhaddad/bitcoin-data?resource=download&select=data_description.txt] utilizado como ejemplo fue uno de data histórica de Bitcoin desde el 2017 hasta el 2021.
+   El [dataset](https://www.kaggle.com/datasets/skanderhaddad/bitcoin-data?resource=download&select=data_description.txt) utilizado como ejemplo fue uno de data histórica de Bitcoin desde el 2017 hasta el 2021.
 
 # Listas actividades para la parte 1
 
-!(Actividades)(https://github.com/users/Neo-Zapata/projects/4/views/1)
+[Actividades](https://github.com/users/Neo-Zapata/projects/4/views/1)
 
 # Referencias Bibliográficas
 
