@@ -11,12 +11,6 @@ using namespace std;
 #define FILENAME "btc_data_bi_day.csv"
 #define DELIM ','
 
-void sha256_test(){
-    string input = "something";
-    string output = sha256(input);
-    cout << "sha256(" << input <<") = " << output << endl;
-}
-
 void filling_blockchain_test(Blockchain &cryptochain, const string& filename){
     ifstream file;
     file.open(filename);
@@ -27,16 +21,6 @@ void filling_blockchain_test(Blockchain &cryptochain, const string& filename){
     }
 }
 
-void blockchain_test_1(Blockchain &cryptochain){
-//    cryptochain.display_genesis();
-    filling_blockchain_test(cryptochain, FILENAME);
-//    cryptochain.display();
-}
-
-void display_blockchain(Blockchain &cryptochain){
-    cryptochain.display();
-}
-
 void Clear()
 {
     cout << "\x1B[2J\x1B[H";
@@ -45,15 +29,8 @@ void Clear()
 
 void add_transaction(Blockchain &cryptochain){
     Clear();
-//    string tex;
     cout << "\n\n Add transaction " << endl;
     cout << "--------------------"<<endl;
-//    cout << "Add: ";
-//    cin  >> tex;
-
-
-    //Incluir el add
-//    Transaction n_transaction;
     ForwardList<Transaction> transactions;
     int opcion;
     do {
@@ -147,7 +124,7 @@ void modification(Blockchain &cryptochain){
             cout << "Invalid option." << endl;
             break;
     }
-//    cryptochain.validate_chain();
+    cryptochain.fix();
 }
 
 void Interactive_Menu(){
@@ -163,7 +140,7 @@ void Interactive_Menu(){
         cout << "2. Add transaction" << endl;
         cout << "3. Modify transaction" << endl;
         cout << "4. Show blocks" << endl;
-        cout << "5. display trannsactions" << endl;
+        cout << "5. Display transactions" << endl;
         cout << "0. End" << endl;
 
         cout << "\nEnter an option: ";
@@ -179,7 +156,7 @@ void Interactive_Menu(){
             case 1:
                 Clear();
                 int V;
-                blockchain_test_1(cryptochain);
+                filling_blockchain_test(cryptochain, FILENAME);
                 do{
                     cout<<endl<< "Ingrese 0 para salir: ";
                     cin>> V;
@@ -198,7 +175,7 @@ void Interactive_Menu(){
             case 4:
                 Clear();
                 int C;
-                display_blockchain(cryptochain);
+                cryptochain.display();
                 do{
                     cout<<endl<< "Ingrese 0 para salir: ";
                     cin>> C;
@@ -235,15 +212,91 @@ void Interactive_Menu(){
                 break;
         }
     } while (repetir);
-    // final check
-    cryptochain.validate_chain();
-    display_blockchain(cryptochain);
+    cryptochain.fix();
+    cryptochain.display();
 }
+
+//void sha256_test(){
+//    string input = "something";
+//    string output = sha256(input);
+//    cout << "sha256(" << input <<") = " << output << endl;
+//}
 
 int main(){ // test the blockchain, if it is reading correctly the data.
     // sha256_test();
-
     Interactive_Menu();
-
     return 0;
 }
+
+
+
+// bstree
+
+// #include <iostream>
+// #include <stdlib.h> 
+// #include "bst.h"
+// #include "tester.h"
+
+// using namespace std;
+
+// int main()
+// {
+//     BSTree<int> *bstree = new BSTree<int>();
+//     bstree->insert(8);
+//     bstree->insert(3);
+//     bstree->insert(1);
+//     bstree->insert(6);
+//     bstree->insert(4);
+//     bstree->insert(7);
+//     bstree->insert(10);
+//     bstree->insert(14);
+//     bstree->insert(13);
+
+
+//     ASSERT(bstree->isBalanced() == false, "The function isBalanced is not working",1);
+
+//     ASSERT(bstree->displayInOrder() == "1 3 4 6 7 8 10 13 14 ", "The function displayInOrder is not working",1);
+//     ASSERT(bstree->displayBFS() == "8 3 10 1 6 14 4 7 13 ", "The function displayBFS is not working",1);
+//     ASSERT(bstree->height() == 3, "The function height is not working",1);
+//     cout<<bstree->height() <<endl;
+//     ASSERT(bstree->minValue() == 1, "The function minValue is not working",1);
+//     ASSERT(bstree->maxValue() == 14, "The function maxValue is not working",1);
+//      ASSERT(bstree->size() == 9, "The function size is not working",1);
+//     ASSERT(bstree->successor(7) == 8, "The function successor is not working",1);
+//     // ASSERT(bstree->predecessor(4) == 3, "The function predecessor is not working",1);
+    
+//     // /*-----------------------iterator---------------------------------*/
+//     // string result = "";
+//     // BSTree<int>::iterator ite = bstree->begin(BSTIterator<int>::Type::PreOrder);
+//     // while(ite != bstree->end()) {
+//     //     result += std::to_string(*ite) + " ";
+//     //     ++ite;
+//     // }
+//     // ASSERT(result == "8 3 1 6 4 7 10 14 13 ", "The PreOrder iterator is not working",3);
+    
+//     // result = "";
+//     // ite = bstree->begin(BSTIterator<int>::Type::PostOrder);
+//     // while(ite != bstree->end()) {
+//     //     result += std::to_string(*ite) + " ";
+//     //     ++ite;
+//     // }
+//     // ASSERT(result == "1 4 7 6 3 13 14 10 8 ", "The PostOrder iterator is not working",3);
+//     // /*---------------------------------------------------------------*/
+
+
+//     bstree->remove(10);
+//     bstree->remove(8);
+//     ASSERT(bstree->displayInOrder() == "1 3 4 6 7 13 14 ", "The function remove is not working",1);
+//     bstree->clear();
+//     bstree->insert(8);
+//     ASSERT(bstree->size() == 1, "The function clear is not working",1);
+    
+
+//     // /*-----------------------BST from ordered array---------------------------------*/
+//     // int array[] = {1,5,7,8,9,11,12,13,15,18,20,22,25,26};
+//     bstree->buildFromOrderedArray(14);    
+//     // ASSERT(bstree->isBalanced() == true, "The function buildFromOrderedArray is not working",1);
+//     // /*---------------------------------------------------------------*/
+
+//     return 0;
+// }

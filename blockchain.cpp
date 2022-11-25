@@ -3,15 +3,23 @@
 #include <iostream>
 #include <fstream>
 #include "forward.h"
+#include "bstree/bst.h"
 using namespace std;
 
 #define num_transaction_in_block 100
 
 class Blockchain{
 private:
+// bstrees
+    BSTree<float> *bstree_open = new BSTree<float>();
+    BSTree<float> *bstree_high = new BSTree<float>();
+    BSTree<float> *bstree_lowest = new BSTree<float>();
+    BSTree<float> *bstree_close = new BSTree<float>();
+    BSTree<float> *bstree_volume = new BSTree<float>();
+    BSTree<int> *bstree_trades = new BSTree<int>();
+
     int size;
     static Block generate_genesis(){ // index = 0
-//        vector<Transaction> transactions; // calling default constructor and initializing variables
         ForwardList<Transaction> transactions;
         Transaction transaction;
         transactions.push_back(transaction);
@@ -32,7 +40,7 @@ public:
         }
     }
 
-    Block* get_latest_block(){ // important not to use copies
+    Block* get_latest_block() { // important not to use copies
         if(size != 0){
             return chain.back();
         } else {
@@ -41,14 +49,21 @@ public:
         }
     }
 
-    void add_block(const ForwardList<Transaction>& transactions){ // if we use string or transaction here will depend on the implementation of transaction
-        // Block new_block // here we create the new block
-        int index = size+1;
-//        string aux = get_latest_block()->get_hash_code();
-//        auto* latest_block_hash_code = new string(aux);
-        string* latest_block_hash_code = get_latest_block()->get_hash_code();
+    void add_to_bstrees(const Block& new_block){
+        ForwardList<Transaction> trans = new_block.transactions;
+        for(int i = 1 ; i <= trans.size() ; i++){
+            this->bstree_close->insert(trans[i].close);
+            this->bstree_high->insert(trans[i].high);
+            this->bstree_lowest->insert(trans[i].lowest);
+            this->bstree_open->insert(trans[i].open);
+            this->bstree_trades->insert(trans[i].number_of_trades);
+            this->bstree_volume->insert(trans[i].volume);
+        }
+    }
 
-        // cout << index << " | " << latest_block_hash_code << endl;
+    void add_block(const ForwardList<Transaction>& transactions){ // if we use string or transaction here will depend on the implementation of transaction
+        int index = size+1;
+        string* latest_block_hash_code = get_latest_block()->get_hash_code();
         Block new_block(index, transactions, latest_block_hash_code);
 
         size_t possible_nonce = 0;
@@ -59,48 +74,48 @@ public:
             possible_nonce += 1;
             new_block.set_nonce(possible_nonce);
         }
-        // new_block.short_display();
         chain.push_back(new_block);
         cout << "mined!" << endl;
+        add_to_bstrees(new_block);
         display_block(new_block);
         size++;
     }
 
-    int is_chain_valid(){
-        // implement our own iterator for our own vector
-        // The idea here is to iterate over the chain asking if the current block is valid (Block has a method called is_valid() that compare the hash_code whit a new generation of a hash code)
-        //  so if there are any changes somewhere on the chain we just return false, and maybe the index block
-        int index_error = 0;
-        for(int i=1; i<=chain.size();i++){
-            if(!(chain[i].is_valid())){
-                cout << "THE CHAIN WAS ALTERED, FIXING BLOCKCHAIN... \n";
-                index_error = i;
-                break;
+    void fix(){
+        int index1 = 1;
+        bool cascade = false;
+        for(int i = 1 ; i <= this->size ; i++){
+            if (this->chain[i].valid == false)
+                cascade = true;
+            if (cascade){
+                this->chain[i].valid = false;
+                // this->chain[i].update();
             }
         }
-        cout << "index error: " << index_error << endl;
-        return index_error;
+        // bool flag = true;
+        // while(flag){
+        //     if(index1 >= this->size){
+        //         flag = false;
+        //     }
+        //     string former_hash_code = chain[index1].hash_code;
+        //     string new_hash_code = chain[index1].generate_hash_code(); // updated
+        //     if(new_hash_code != former_hash_code){
+        //         if(index1 == 1){
+        //             this->chain[index1].valid = false;
+        //         } else {
+        //             this->chain[index1-1].valid = false;
+        //         }
+        //     }
+        //     index1++;
+        // }
+        // this->chain[index1-1].valid = false;
     }
-
-    void validate_chain(){
-        int index_error = is_chain_valid(); // index of block where error happened, if no error, then 0 is returned
-        if(index_error){
-            while(chain.size() > index_error) {
-                cout << "chain size" << chain.size() << endl;
-                chain.pop_back();
-                size--;
-            }
-        }
-    }
-
 
     void read_and_load_csv(const string& filename, char delim = ','){
-        // i need the delimeter and the newline character and the filename
         ForwardList<Transaction> transactions;
         ifstream file(filename);
 
         if(file.is_open()){
-
             int number_of_transaction_read = 0; // this is important to store transaction into blocks
             string line, field;
 
@@ -150,38 +165,23 @@ public:
                             break;
                         default:
                             break;
-                            // cout << "field 'ignore' ignored" << endl; // this should be the ignore field from the .csv
                     }
                     aux++;
                 }
                 transactions.push_back(new_transaction);
-                // new_transaction->display(); // the reading works
                 number_of_transaction_read++;
-                // cout << number_of_transaction_read << endl;
                 if(number_of_transaction_read >= num_transaction_in_block){
                     number_of_transaction_read = 0;
                     add_block(transactions); // after this line, the block should be succesfully inserted in the blockchain
-                    // delete <?>
                     transactions.clear();
                 }
             }
             add_block(transactions); // adding the last transaction that couldn't make it to fill a block
             transactions.clear();
-            // cout << chain.size();
             file.close();
         } else {
             cerr << "error while opening file (read_csv_innto_transaction)" << endl;
         }
-    }
-
-    void display_genesis(){
-        cout << " --------------------------------------------------------------------------------------------------" << endl;
-        cout << "|                                                                                                  |" << endl;
-        chain[0].short_display();
-        cout << "|                                                                                                  |" << endl;
-        cout << " --------------------------------------------------------------------------------------------------" << endl;
-        cout << "                                                    |" << endl;
-        cout << "                                                    V" << endl;
     }
 
     void display(){
@@ -209,36 +209,36 @@ public:
     }
 
     void modify_index(int block_index, int new_index){
-        Block to_modify = chain[block_index];
+        Block to_modify = this->chain[block_index];
         to_modify.index = new_index;
-        chain[block_index] = to_modify;
+        this->chain[block_index].update(to_modify);
+
     }
 
-    void modify_nonce(int block_index, int new_nonce){
-        Block to_modify = chain[block_index];
+    void modify_nonce(int block_index, size_t new_nonce){
+        Block to_modify = this->chain[block_index];
         to_modify.nonce = new_nonce;
-        chain[block_index] = to_modify;
+        this->chain[block_index].update(to_modify);
     }
 
     void modify_hashcode(int block_index, const string &new_hashcode){
-        Block to_modify = chain[block_index];
+        Block to_modify = this->chain[block_index];
         to_modify.hash_code = new_hashcode;
-        chain[block_index] = to_modify;
+        this->chain[block_index].update(to_modify);
     }
 
     void modify_prev_hashcode(int block_index, const string &new_prev_hashcode){
-        Block to_modify = chain[block_index];
+        Block to_modify = this->chain[block_index];
         *(to_modify.prev_hash_code) = new_prev_hashcode;
-        chain[block_index] = to_modify;
+        this->chain[block_index].update(to_modify);
     }
 
     void modify_transaction(int block_index, int index_transaction){
-        Block to_modify = chain[block_index];
+        Block to_modify = this->chain[block_index];
         cout << "\n\n" << endl;
         Transaction new_transaction;
         new_transaction.create_transaction();
         to_modify.transactions[index_transaction] = new_transaction;
-        chain[block_index] = to_modify;
+        this->chain[block_index].update(to_modify);
     }
-
 };
