@@ -10,14 +10,6 @@ using namespace std;
 
 class Blockchain{
 private:
-// bstrees
-    BSTree<float> *bstree_open = new BSTree<float>();
-    BSTree<float> *bstree_high = new BSTree<float>();
-    BSTree<float> *bstree_lowest = new BSTree<float>();
-    BSTree<float> *bstree_close = new BSTree<float>();
-    BSTree<float> *bstree_volume = new BSTree<float>();
-    BSTree<int> *bstree_trades = new BSTree<int>();
-
     int size;
     static Block generate_genesis(){ // index = 0
         ForwardList<Transaction> transactions;
@@ -28,6 +20,40 @@ private:
         return genesis;
     }
 public:
+// bstrees
+    BSTree<float> *bstree_open = new BSTree<float>();
+    BSTree<float> *bstree_high = new BSTree<float>();
+    BSTree<float> *bstree_lowest = new BSTree<float>();
+    BSTree<float> *bstree_close = new BSTree<float>();
+    BSTree<float> *bstree_volume = new BSTree<float>();
+    BSTree<int> *bstree_trades = new BSTree<int>();
+
+    void display_bstree(int opcion){
+        switch(opcion){
+            case 1:
+                cout << bstree_open->displayInOrder() << endl;
+                break;
+            case 2:
+                cout << bstree_high->displayInOrder() << endl;
+                break;
+            case 3:
+                cout << bstree_lowest->displayInOrder() << endl;
+                break;
+            case 4:
+                cout << bstree_close->displayInOrder() << endl;
+                break;
+            case 5:
+                cout << bstree_volume->displayInOrder() << endl;
+                break;
+            case 6:
+                cout << bstree_trades->displayInOrder() << endl;
+                break;
+            default:
+                cerr << "Option is invalid" << endl;
+                return;
+        }
+    }
+
     ForwardList<Block> chain; // needs our own implementation of vector to allocate memory dynamically [TODO] (maybe a forward circular linked list)
 
     Blockchain(){
@@ -92,23 +118,6 @@ public:
                 // this->chain[i].update();
             }
         }
-        // bool flag = true;
-        // while(flag){
-        //     if(index1 >= this->size){
-        //         flag = false;
-        //     }
-        //     string former_hash_code = chain[index1].hash_code;
-        //     string new_hash_code = chain[index1].generate_hash_code(); // updated
-        //     if(new_hash_code != former_hash_code){
-        //         if(index1 == 1){
-        //             this->chain[index1].valid = false;
-        //         } else {
-        //             this->chain[index1-1].valid = false;
-        //         }
-        //     }
-        //     index1++;
-        // }
-        // this->chain[index1-1].valid = false;
     }
 
     void read_and_load_csv(const string& filename, char delim = ','){
@@ -240,5 +249,10 @@ public:
         new_transaction.create_transaction();
         to_modify.transactions[index_transaction] = new_transaction;
         this->chain[block_index].update(to_modify);
+    }
+
+    template <typename T>
+    string simple_search(T x){
+
     }
 };

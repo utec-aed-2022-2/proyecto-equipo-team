@@ -23,6 +23,11 @@ public:
     {
         root = nullptr;
     }
+
+    bool solve_query(T X, int query_type){
+        return this->find(X);
+    }
+
     void insert(T value)
     {
         insert(this->root, value);
@@ -325,6 +330,7 @@ private:
     }
     void displayInOrder(NodeBT<T> *node, string &value)
     {
+        string result;
 
         if (node == nullptr)
             return;

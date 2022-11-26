@@ -11,6 +11,10 @@ using namespace std;
 #define FILENAME "btc_data_bi_day.csv"
 #define DELIM ','
 
+void bstree_query(Blockchain &cryptochain);
+void choose_atr(Blockchain &cryptochain, int query_type);
+void display_bstree(Blockchain &cryptochain);
+
 void filling_blockchain_test(Blockchain &cryptochain, const string& filename){
     ifstream file;
     file.open(filename);
@@ -141,12 +145,14 @@ void Interactive_Menu(){
         cout << "3. Modify transaction" << endl;
         cout << "4. Show blocks" << endl;
         cout << "5. Display transactions" << endl;
+        cout << "6. bstree query" << endl;
+        cout << "7. display bstree" << endl;
         cout << "0. End" << endl;
 
         cout << "\nEnter an option: ";
         cin >> opcion;
 
-        while(opcion != 0 and opcion != 1 and opcion != 2 and opcion != 3 and opcion != 4 and opcion != 5){
+        while(opcion != 0 and opcion != 1 and opcion != 2 and opcion != 3 and opcion != 4 and opcion != 5 and opcion != 6 and opcion != 7){
             cerr << endl << "Enter a valid option";
             cout << "\nEnter an option: ";
             cin >> opcion;
@@ -204,6 +210,14 @@ void Interactive_Menu(){
 
                 break;
 
+            case 6:
+                bstree_query(cryptochain);
+                break;
+            
+            case 7:
+                display_bstree(cryptochain);
+                break;
+
             case 0:
                 repetir = false;
                 break;
@@ -214,6 +228,154 @@ void Interactive_Menu(){
     } while (repetir);
     cryptochain.fix();
     cryptochain.display();
+}
+
+void display_bstree(Blockchain &cryptochain){
+    int opcion;
+    bool repetir = true;
+    do{
+        Clear();
+        cout << "\n\n        Choose a bstree to show in order: " << endl;
+        cout << "--------------------"<<endl;
+        cout << "1. bstree_open" << endl;
+        cout << "2. bstree_high" << endl;
+        cout << "3. bstree_lowest" << endl;
+        cout << "4. bstree_close" << endl;
+        cout << "5. bstree_volume" << endl;
+        cout << "6. bstree_trades" << endl;
+        cout << "0. End" << endl;
+
+        cout << "\nEnter an option: ";
+        cin >> opcion;
+
+        while(opcion != 0 and opcion != 1 and opcion != 2 and opcion != 3 and opcion != 4 and opcion != 5 and opcion != 6){
+            cerr << endl << "Enter a valid option";
+            cout << "\nEnter an option: ";
+            cin >> opcion;
+        }
+        if (opcion == 0){
+            repetir = 0;
+        } else {
+            cryptochain.display_bstree(opcion);
+            int F;
+            do{
+                cout<<endl<< "Ingrese 0 para salir: ";
+                cin>> F;
+                Clear();
+            }while(F != 0);
+        }
+    } while(repetir);
+}
+
+void bstree_query(Blockchain &cryptochain){
+    int opcion;
+    bool repetir = true;
+    do{
+        Clear();
+        cout << "\n\n        Choose a query type: " << endl;
+        cout << "--------------------"<<endl;
+        cout << "1. Igual a X" << endl;
+        cout << "2. Entre X y Y" << endl;
+        cout << "3. Inicia con" << endl;
+        cout << "4. Está contenido en" << endl;
+        cout << "5. Máximo valor de" << endl;
+        cout << "6. Mínimo valor de" << endl;
+        cout << "0. End" << endl;
+
+        cout << "\nEnter an option: ";
+        cin >> opcion;
+
+        while(opcion != 0 and opcion != 1 and opcion != 2 and opcion != 3 and opcion != 4 and opcion != 5 and opcion != 6){
+            cerr << endl << "Enter a valid option";
+            cout << "\nEnter an option: ";
+            cin >> opcion;
+        }
+        if (opcion == 0){
+            repetir = 0;
+        } else {
+            choose_atr(cryptochain, opcion);
+        }
+    } while(repetir);
+}
+
+void choose_atr(Blockchain &cryptochain, int query_type){
+    int opcion;
+    bool repetir = true;
+    do {
+        Clear();
+        cout << "\n\n        Choose an atribute to query: " << endl;
+        cout << "--------------------"<<endl;
+        cout << "1. open" << endl;
+        cout << "2. high" << endl;
+        cout << "3. lowest" << endl;
+        cout << "4. close" << endl;
+        cout << "5. volume" << endl;
+        cout << "6. number of trades" << endl;
+        cout << "0. End" << endl;
+
+        cout << "\nEnter an option: ";
+        cin >> opcion;
+
+        while(opcion != 0 and opcion != 1 and opcion != 2 and opcion != 3 and opcion != 4 and opcion != 5 and opcion != 6){
+            cerr << endl << "Enter a valid option";
+            cout << "\nEnter an option: ";
+            cin >> opcion;
+        }
+
+        switch (opcion) {
+            case 1:
+                Clear();
+                float X;
+                cout << "\n\n        Enter a price in open time to search: " << endl;
+                cout << "--------------------"<<endl;
+                cout << "\nEnter an option: ";
+                cin >> X;
+                if(cryptochain.bstree_open->solve_query(X, query_type)){
+                    Clear();
+                    cout << "\n\n       FOUND!!! " << endl;
+                    cout << "--------------------"<<endl;
+                    
+                } else {
+                    Clear();
+                    cout << "\n\n   NOT FOUND!!! " << endl;
+                    cout << "--------------------"<<endl;
+                }
+                int G;
+                do{
+                    cout<<endl<< "Ingrese 0 para salir: ";
+                    cin>> G;
+                    Clear();
+                }while(G != 0);
+                break;
+
+            case 2:
+                // cryptochain.bstree_high.solve_query(query_type)
+                break;
+
+            case 3:
+                // cryptochain.bstree_lowest.solve_query(query_type)
+                break;
+
+            case 4:
+                // cryptochain.bstree_close.solve_query(query_type)
+                break;
+
+            case 5:
+                // cryptochain.bstree_volume.solve_query(query_type)
+                break;
+
+            case 6:
+                // cryptochain.bstree_trades.solve_query(query_type)
+                break;
+
+            case 0:
+                repetir = false;
+                break;
+            default:
+                cout << "Invalid option." << endl;
+                break;
+        }
+    } while (repetir);
 }
 
 //void sha256_test(){
