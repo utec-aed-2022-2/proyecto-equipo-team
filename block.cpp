@@ -73,8 +73,33 @@ public:
         this->nonce = nonce_;
     }
 
-    bool proof_of_work() { // method: HashCash
-        return (this->generate_hash_code().substr(0, 2) == "00");
+    bool proof_of_work(int dificulty) { // method: HashCash
+        switch(dificulty){
+            case 1:{
+                return (this->generate_hash_code().substr(0, 1) == "0");
+                break;
+            }
+            case 2:{
+                return (this->generate_hash_code().substr(0, 2) == "00");
+                break;
+            }
+            case 3:{
+                return (this->generate_hash_code().substr(0, 3) == "000");
+                break;
+            }
+            case 4:{
+                return (this->generate_hash_code().substr(0, 4) == "0000");
+                break;
+            }
+            case 5:{
+                return (this->generate_hash_code().substr(0, 5) == "00000");
+                break;
+            }
+            default:{
+                cout << "dificulty mode error" << endl;
+                return false;
+            }
+        }
     }
 
     void short_display(){

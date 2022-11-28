@@ -4,6 +4,7 @@
 #include <fstream>
 #include "forward.h"
 #include "bstree/bst.h"
+#include <chrono>
 using namespace std;
 
 #define num_transaction_in_block 100
@@ -87,7 +88,7 @@ public:
         }
     }
 
-    void add_block(const ForwardList<Transaction>& transactions){ // if we use string or transaction here will depend on the implementation of transaction
+    void add_block(const ForwardList<Transaction>& transactions, int dificulty){ // if we use string or transaction here will depend on the implementation of transaction
         int index = size+1;
         string* latest_block_hash_code = get_latest_block()->get_hash_code();
         Block new_block(index, transactions, latest_block_hash_code);
@@ -95,7 +96,7 @@ public:
         size_t possible_nonce = 0;
         new_block.set_nonce(possible_nonce);
         cout << "mining..." << endl;
-        while (!new_block.proof_of_work())
+        while (!new_block.proof_of_work(dificulty))
         {
             possible_nonce += 1;
             new_block.set_nonce(possible_nonce);
@@ -120,7 +121,7 @@ public:
         }
     }
 
-    void read_and_load_csv(const string& filename, char delim = ','){
+    void read_and_load_csv(const string& filename, char delim = ',', int dificulty = 2){
         ForwardList<Transaction> transactions;
         ifstream file(filename);
 
@@ -181,11 +182,11 @@ public:
                 number_of_transaction_read++;
                 if(number_of_transaction_read >= num_transaction_in_block){
                     number_of_transaction_read = 0;
-                    add_block(transactions); // after this line, the block should be succesfully inserted in the blockchain
+                    add_block(transactions, dificulty); // after this line, the block should be succesfully inserted in the blockchain
                     transactions.clear();
                 }
             }
-            add_block(transactions); // adding the last transaction that couldn't make it to fill a block
+            add_block(transactions, dificulty); // adding the last transaction that couldn't make it to fill a block
             transactions.clear();
             file.close();
         } else {
@@ -215,6 +216,168 @@ public:
         cout << " --------------------------------------------------------------------------------------------------" << endl;
         cout << "                                                    |" << endl;
         cout << "                                                    V" << endl;
+    }
+
+    void Clear()
+    {
+        cout << "\x1B[2J\x1B[H";
+    }
+
+    void entre_x_y(){
+        int opcion;
+        bool repetir = true;
+        do{
+            Clear();
+            cout << "\n\n        Choose an attribute: " << endl;
+            cout << "--------------------"<<endl;
+            cout << "1. open" << endl;
+            cout << "2. high" << endl;
+            cout << "3. lowest" << endl;
+            cout << "4. close" << endl;
+            cout << "5. volume" << endl;
+            cout << "6. trades" << endl;
+            cout << "0. End" << endl;
+
+            cout << "\nEnter an option: ";
+            cin >> opcion;  
+
+            while(opcion != 0 and opcion != 1 and opcion != 2 and opcion != 3 and opcion != 4 and opcion != 5 and opcion != 6){
+                cerr << endl << "Enter a valid option";
+                cout << "\nEnter an option: ";
+                cin >> opcion;
+            }
+            if (opcion == 0){
+                repetir = 0;
+            } else {
+                float x, y;
+                Clear();
+                cout << "\n\n        Choose a range: " << endl;
+                cout << "--------------------"<<endl;
+                cout << "\nEnter X: ";
+                cin >> x;
+                Clear();
+                cout << "\n\n        Choose a range: " << endl;
+                cout << "--------------------"<<endl;
+                cout << "\nEnter Y: ";
+                cin >> y;
+                // function
+                // find x in opcion tree and print in order until node == y
+                Clear();
+                switch(opcion){
+                    case 1:{
+                        auto start1 = chrono::high_resolution_clock::now();
+                        this->bstree_open->range_search(x, y);
+                        auto end1 = chrono::high_resolution_clock::now();    
+                        // Calculating total time taken by the program.
+                        double time_taken1 = chrono::duration_cast<chrono::nanoseconds>(end1 - start1).count();
+                        time_taken1 *= 1e-9;
+                        cout << endl << "Time taken by program is : " << time_taken1 << setprecision(9);
+                        cout << " sec" << endl;
+                        int V;
+                        do{
+                            cout<<endl<< "Ingrese 0 para salir: ";
+                            cin>> V;
+                            Clear();
+                        }while(V!=0);
+                        break;
+                    }
+                    case 2:{
+                        auto start2 = chrono::high_resolution_clock::now();
+                        this->bstree_high->range_search(x, y);
+                        auto end2 = chrono::high_resolution_clock::now();    
+                        // Calculating total time taken by the program.
+                        double time_taken2 = chrono::duration_cast<chrono::nanoseconds>(end2 - start2).count();
+                        time_taken2 *= 1e-9;
+                        cout << endl << "Time taken by program is : " << time_taken2 << setprecision(9);
+                        cout << " sec" << endl;
+                        int V;
+                        do{
+                            cout<<endl<< "Ingrese 0 para salir: ";
+                            cin>> V;
+                            Clear();
+                        }while(V!=0);
+                        break;
+                    }
+                    case 3:{
+                        auto start3 = chrono::high_resolution_clock::now();
+                        this->bstree_lowest->range_search(x, y);
+                        auto end3 = chrono::high_resolution_clock::now();   
+                        // Calculating total time taken by the program.
+                        double time_taken3 = chrono::duration_cast<chrono::nanoseconds>(end3 - start3).count();
+                        time_taken3 *= 1e-9;
+                        cout << endl << "Time taken by program is : " << time_taken3 << setprecision(9);
+                        cout << " sec" << endl;
+                        int V;
+                        do{
+                            cout<<endl<< "Ingrese 0 para salir: ";
+                            cin>> V;
+                            Clear();
+                        }while(V!=0);
+                        break;
+                    }
+                    case 4:{
+                        auto start4 = chrono::high_resolution_clock::now();
+                        this->bstree_close->range_search(x, y);
+                        auto end4 = chrono::high_resolution_clock::now();     
+                        // Calculating total time taken by the program.
+                        double time_taken4 = chrono::duration_cast<chrono::nanoseconds>(end4 - start4).count();
+                        time_taken4 *= 1e-9;
+                        cout << endl << "Time taken by program is : " << time_taken4 << setprecision(9);
+                        cout << " sec" << endl;
+                        int V;
+                        do{
+                            cout<<endl<< "Ingrese 0 para salir: ";
+                            cin>> V;
+                            Clear();
+                        }while(V!=0);
+                        break;
+                    }
+                    case 5:{
+                        auto start5 = chrono::high_resolution_clock::now();
+                        this->bstree_volume->range_search(x, y);
+                        auto end5 = chrono::high_resolution_clock::now();    
+                        // Calculating total time taken by the program.
+                        double time_taken5 = chrono::duration_cast<chrono::nanoseconds>(end5 - start5).count();
+                        time_taken5 *= 1e-9;
+                        cout << endl << "Time taken by program is : " << time_taken5 << setprecision(9);
+                        cout << " sec" << endl;
+                        int V;
+                        do{
+                            cout<<endl<< "Ingrese 0 para salir: ";
+                            cin>> V;
+                            Clear();
+                        }while(V!=0);
+                        break;
+                    }
+                    case 6:{
+                        auto start6 = chrono::high_resolution_clock::now();
+                        this->bstree_trades->range_search(x, y);
+                        auto end6 = chrono::high_resolution_clock::now();    
+                        // Calculating total time taken by the program.
+                        double time_taken6 = chrono::duration_cast<chrono::nanoseconds>(end6 - start6).count();
+                        time_taken6 *= 1e-9;
+                        cout << endl << "Time taken by program is : " << time_taken6 << setprecision(9);
+                        cout << " sec" << endl;
+                        int V;
+                        do{
+                            cout<<endl<< "Ingrese 0 para salir: ";
+                            cin>> V;
+                            Clear();
+                        }while(V!=0);
+                        break;
+                    }
+                    default:
+                        cout << "error in opcion " << endl;
+                        int V;
+                        do{
+                            cout<<endl<< "Ingrese 0 para salir: ";
+                            cin>> V;
+                            Clear();
+                        }while(V!=0);
+                        break;
+                }
+            }
+        } while(repetir);
     }
 
     void modify_index(int block_index, int new_index){

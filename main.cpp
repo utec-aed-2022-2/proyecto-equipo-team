@@ -11,15 +11,16 @@ using namespace std;
 #define FILENAME "btc_data_bi_day.csv"
 #define DELIM ','
 
+void query(Blockchain &cryptochain);
 void bstree_query(Blockchain &cryptochain);
 void choose_atr(Blockchain &cryptochain, int query_type);
 void display_bstree(Blockchain &cryptochain);
 
-void filling_blockchain_test(Blockchain &cryptochain, const string& filename){
+void filling_blockchain_test(Blockchain &cryptochain, const string& filename, int dificulty){
     ifstream file;
     file.open(filename);
     if(file.is_open()){
-        cryptochain.read_and_load_csv(filename, DELIM);
+        cryptochain.read_and_load_csv(filename, DELIM, dificulty);
     } else {
         cerr << "Error opening file. (filling_blockchain_test)" << endl;
     }
@@ -31,7 +32,7 @@ void Clear()
 }
 
 
-void add_transaction(Blockchain &cryptochain){
+void add_transaction(Blockchain &cryptochain, int dificulty){
     Clear();
     cout << "\n\n Add transaction " << endl;
     cout << "--------------------"<<endl;
@@ -53,7 +54,7 @@ void add_transaction(Blockchain &cryptochain){
             cin >> opcion;
         }
     } while(opcion);
-    cryptochain.add_block(transactions);
+    cryptochain.add_block(transactions, dificulty);
 }
 
 void modification(Blockchain &cryptochain){
@@ -145,7 +146,7 @@ void Interactive_Menu(){
         cout << "3. Modify transaction" << endl;
         cout << "4. Show blocks" << endl;
         cout << "5. Display transactions" << endl;
-        cout << "6. bstree query" << endl;
+        cout << "6. query" << endl;
         cout << "7. display bstree" << endl;
         cout << "0. End" << endl;
 
@@ -162,7 +163,26 @@ void Interactive_Menu(){
             case 1:
                 Clear();
                 int V;
-                filling_blockchain_test(cryptochain, FILENAME);
+                int dificulty;
+                cout << "\n\n        Insert dificulty for block inserting " << endl;
+                cout << "--------------------"<<endl;
+                cout << "1. fastest" << endl;
+                cout << "2. fast" << endl;
+                cout << "3. normal" << endl;
+                cout << "4. slow" << endl;
+                cout << "5. the slowest" << endl;
+                cout << "0. End" << endl;
+
+                cout << "\nEnter an option: ";
+                cin >> dificulty;
+
+                while(dificulty != 0 and dificulty != 1 and dificulty != 2 and dificulty != 3 and dificulty != 4 and dificulty != 5){
+                    cerr << endl << "Enter a valid option";
+                    cout << "\nEnter an option: ";
+                    cin >> dificulty;
+                }
+
+                filling_blockchain_test(cryptochain, FILENAME, dificulty);
                 do{
                     cout<<endl<< "Ingrese 0 para salir: ";
                     cin>> V;
@@ -171,7 +191,8 @@ void Interactive_Menu(){
                 break;
 
             case 2:
-                add_transaction(cryptochain);
+                dificulty = 2;
+                add_transaction(cryptochain, dificulty);
                 break;
 
             case 3:
@@ -211,7 +232,7 @@ void Interactive_Menu(){
                 break;
 
             case 6:
-                bstree_query(cryptochain);
+                query(cryptochain);
                 break;
             
             case 7:
@@ -267,7 +288,7 @@ void display_bstree(Blockchain &cryptochain){
     } while(repetir);
 }
 
-void bstree_query(Blockchain &cryptochain){
+void query(Blockchain &cryptochain){
     int opcion;
     bool repetir = true;
     do{
@@ -293,6 +314,44 @@ void bstree_query(Blockchain &cryptochain){
         if (opcion == 0){
             repetir = 0;
         } else {
+            switch(opcion){
+                case 1:
+                    int F1;
+                    do{
+                        cout<<endl<< "Ingrese 0 para salir: ";
+                        cin>> F1;
+                    }while(F1 != 0);
+                    break;
+                case 2:
+                    cryptochain.entre_x_y();
+                    int F2;
+                    do{
+                        cout<<endl<< "Ingrese 0 para salir: ";
+                        cin>> F2;
+                    }while(F2 != 0);
+                    break;
+                case 3:
+                    cout << "no aplica" << endl;
+                    int F3;
+                    do{
+                        cout<<endl<< "Ingrese 0 para salir: ";
+                        cin>> F3;
+                    }while(F3 != 0);
+                    break;
+                case 4:
+                    cout << "no aplica" << endl;
+                    int F4;
+                    do{
+                        cout<<endl<< "Ingrese 0 para salir: ";
+                        cin>> F4;
+                        Clear();
+                    }while(F4 != 0);
+                    break;
+                case 5:
+                    break;
+                case 6:
+                    break;
+            }
             choose_atr(cryptochain, opcion);
         }
     } while(repetir);

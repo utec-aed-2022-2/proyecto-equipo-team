@@ -32,6 +32,7 @@ public:
     {
         insert(this->root, value);
     }
+
     bool find(T value)
     {
         auto trav = root;
@@ -56,30 +57,63 @@ public:
         }
     }
 
+    void range_search(int k1, int k2){
+        range_search(this->root, k1, k2);
+    }
+
+    void range_search(NodeBT<T> *root, int k1, int k2)
+    {
+        if ( NULL == root )
+            return;
+        
+        if ( k1 < root->data )
+            range_search(root->left, k1, k2);
+        
+        if ( k1 <= root->data && k2 >= root->data )
+            cout<<root->data<<" - ";
+        
+        range_search(root->right, k1, k2);
+    }
+
+    void displayInOrder(NodeBT<T> *node, string &value)
+    {
+        string result;
+
+        if (node == nullptr)
+            return;
+        displayInOrder(node->left, value);
+        value = value + to_string(node->data);
+        value = value + " ";
+        displayInOrder(node->right, value);
+    }
+
+    NodeBT<T>* modified_find(T min_value)
+    {
+        auto trav = root;
+        while (true)
+        {
+            if (trav == nullptr)
+            {
+                return nullptr;
+            }
+            else if (min_value > trav->data)
+            {
+                trav = trav->right;
+            }
+            else if (min_value <= trav->data)
+            {
+                return trav;
+            }
+        }
+    }
+
     string displayInOrder()
     {
         string vacio;
         displayInOrder(this->root, vacio);
         return vacio;
     }
-    // string displayPreOrder()
-    // {
-    //     stack<NodeBT<T> *> Bolsita;
-    //     Bolsita.push(root);
-    //     string texto = "";
-    //     while (!Bolsita.empty())
-    //     {
-    //         NodeBT<T> *tempo = Bolsita.top();
-    //         texto += to_string(tempo->data);
-    //         texto += " ";
-    //         Bolsita.pop();
-    //         if (tempo->right != nullptr)
-    //             Bolsita.push(tempo->right);
-    //         if (tempo->left != nullptr)
-    //             Bolsita.push(tempo->left);
-    //     }
-    //     return texto;
-    // }
+
     string displayPostOrder();
     // int height();
     int height()
@@ -328,17 +362,7 @@ private:
         }
         return 0;
     }
-    void displayInOrder(NodeBT<T> *node, string &value)
-    {
-        string result;
 
-        if (node == nullptr)
-            return;
-        displayInOrder(node->left, value);
-        value = value + to_string(node->data);
-        value = value + " ";
-        displayInOrder(node->right, value);
-    }
     T minValue(NodeBT<T> *&node)
     {
         // el bst tiene los mayores en la derecha
