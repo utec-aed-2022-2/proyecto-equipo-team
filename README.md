@@ -10,71 +10,37 @@ Básicamente las criptomonedas están basadas 100% bajo la tecnología de blockc
 
 # Explicación estructuras de datos del blockchain
 
-Nuestro proyecto se compone de varias clases en la siguiente jerarquia:
+Las estructuras de datos implementadas por nuestra cuenta fueron las siguientes:
 
-1. Blockchain
-   Atributos:
-   - size: Cantidad de bloques en la blockchain.
-   - chain: Forward Linked List de objetos clase Block
-   Métodos:
-   - get_latest_block(): Obtien el último bloques en la blockchain
-   - add_block(): Agrega un bloque a la blockchain.
-   - is_chain_valid(): Valida si la blockchain es válida (si los código hash previos de los bloques son correctos).
-   - read_and_load_csv(): Lee un archivo .csv, genera transacciones, crea bloques y los agrega a la blockchain.
-   - display(): Pinta la información de la blockchain
-   - display_block(): Pinta la información de un bloque en específico.
-2. Block
-   Atributos:
-   - index: Número de bloque en la blockchain
-   - nonce: Número tal que hace que el código hash del bloque empiece en "000"
-   - hash_code: Cadena de ecriptación generado por el algortimo sha-256
-   - prev_hash_code: Puntero al código hash del bloque anterior
-   - transactions: Conjunto de transacciones del bloque
-   Métodos:
-   - generate_hash_code(): Genera el código hash del bloque de acuerdo a la información de todos los atributos.
-   - is_valid(): Verifica que el código hash del bloque sea el correcto al generarlo nuevamente.
-   - proof_of_work(): Verifica que el código hash del bloque empiece en "000"
-   - short_display(): Pinta la información del bloque
-3. Transaction
-   Atributos: (Propios de Bitcoin)
-   - date: Tiempo de apertura
-   - open: Precio del Bitcoin en el tiempo de apertura
-   - high: Precio mayor en el periodo
-   - lowest: Precio menor en el periodo
-   - close: Precio de cierre
-   - volume: Número de unidades intercambiadas en el mercado en el periodo
-   - close_time: Tiempo de cierre
-   - quote_asset_volume: Volumen de la moneda de cambio de Bitcoin (Como el dólar)
-   - number_of_trades: Número de operaciones o intercambios
-   - taker_buy_base_asset_volume: Monto recibido
-   - taker_buy_quote_asset_volume: Monto recibido en la moneda de cambio
-   Métodos:
-   - get_data_as_string(): Obtene la data de todos los atributos de la transaccion en string.
-   - display(): Pinta la información de la transaccion
+1. Forward Linked List: Para almacenar los bloques dentro de la blockchain y guardar algunos otros datos.
+2. Binary Search Tree: Para la búsqueda por rango.
+3. Heaps: Para la búsqueda de máximo o mínimo.
+4. Hash: Para la búsqueda exacta.
+5. Trie: Para la búsqueda de patrones en atributos tipo string.
+
+Nuestro proyecto presenta el siguiente diagrama de clases:
+
+![image](https://user-images.githubusercontent.com/82919499/205078795-4beaa0dd-3218-402a-a1ab-6e5ca43e6dc7.png)
 
 Consideraciones:
 
-- La blockchain está compuesta de un conjunto de bloques
-- Cada bloque está compuesta por un conjunto de transacciones
-- Cada transaccion tiene sus propios atributos dependiendo del contexto
-- El primer bloque de la blockchain (el génesis) tiene asignado un código hash previo de "0"
-- La información ingresada al bloque es manual o a través de un archivo .csv
-- La capacidad de transacciones que puede ser almacenada en un bloque es de 100
+- La blockchain está compuesta de un conjunto de bloques.
+- Cada bloque está compuesta por un conjunto de transacciones.
+- Cada transaccion tiene sus propios atributos dependiendo del contexto.
+- El primer bloque de la blockchain (el génesis) tiene asignado un código hash previo de "0".
+- La información ingresada al bloque es manual o a través de un archivo .csv.
+- La capacidad de transacciones que puede ser almacenada en un bloque es de 100.
 - El algortimo de ecriptación es el sha-256, pero es implementado en archivos .cpp de acuerdo a un código en un blog de internet, ya que no nos fue bien al intentar instalar OpenSSL en Windows/MacOS.
+- Al insertar las transacciones en los bloques, también se insertan sus atributos en las estructuras de datos correspondientes.
 
-
-Las estructuras de datos implementadas por nuestra cuenta fueron las siguientes:
-
-1. Forward Linked List: Para almacenar los bloques dentro de la blockchain
-2. Vector: Para almacenar las transacciones de un bloque
 
    ## Estrategia para asegurar integridad de su contenido
 
-   La clase bloque tiene un método ```is_valid() ``` que compara si el código hash que tiene actualmente el bloque sería el mismo si se vuelve a generar el código hash (el cual toma en cuenta la información de todos los atributos de la clase bloque).
+   La clase bloque tiene un método ```proof_of_work() ``` que compara si el código hash que tiene actualmente el bloque sería el mismo si se vuelve a generar el código hash (el cual toma en cuenta la información de todos los atributos de la clase bloque).
 
    ## Proof of Work
 
-   El proof of work que utilizamos es que si alguien intenta agregar un bloque, primero debe encontrar un número (nonce) tal que haga que los primeros tres caracteres del código hash del bloque sean 0. Si se llega a encontrar ese número, recién se puede agregar el bloque a la cadena.
+   El proof of work que utilizamos es que si alguien intenta agregar un bloque, primero debe encontrar un número (nonce) tal que haga que los primeros caracteres del código hash del bloque sean 0, 00, 000, 0000, 00000, según la dificultad de inserción elegida. Si se llega a encontrar ese número, recién se puede agregar el bloque a la cadena.
    
    ## Analisis de complejidad de los metodos del Blockchain
    
@@ -90,20 +56,35 @@ Las estructuras de datos implementadas por nuestra cuenta fueron las siguientes:
    ## Estructuras de datos usados para los diferentes criterios de busqueda
    
     1. Igual a X: Hash table
-      - Como se hara una simple busqueda de valor optamos por este metodo por la rapides al acceso a datos teniendo una complejidad de O(n).
+      - Como se hara una simple busqueda de valor optamos por este metodo por la rapidez al acceso a datos teniendo una complejidad en general de O(1).
          
-         Diagrama:
+        ![image](https://user-images.githubusercontent.com/82919499/205082437-35298f4e-f6dc-4f99-8433-89ae778110de.png)
+
       
     2. Entre X y Y: BST
       - Con el recorrido por rango se decidio por el BST ya que este se ordena al almacenar solo bastaria con un recorrido desde el valor inicial hasta el final que           busquemos con una complejidad de O(n).
-         
-         Diagrama:
       
+        ![image](https://user-images.githubusercontent.com/82919499/205085007-e07c1ce5-04e2-4904-ac46-5c71f13244c3.png)
+
+         
     3. Maximo valor de: Heap 
     4. Minimo valor de: Heap
       - Para los ultimos 2 casos la estructura heap es la mas indicada de todas ya que la forma del maxheap y del minheap mantienen en un raiz(root) al valor mayor y           menor respectivamente proporcionandonos una complejidad de O(1).
+      
+      ![image](https://user-images.githubusercontent.com/82919499/205085398-ad15c319-b783-4a5a-8ffb-53b8a86b5c5f.png)
+
          
-         Diagrama:
+    5. Inicia con:
+      - Para encontrar palabras que inicien con un determinado texto ingresado por el usuario. Utilizamos un Trie (Prefix Tree) para que la complejidad de búsqueda sea en el peor caso O(m), donde m es el tamaño del texto a buscar.
+      
+      ![image](https://user-images.githubusercontent.com/82919499/205085721-ce8877aa-c136-412c-a690-15c8adde899c.png)
+
+      
+    6. Está contenido en:
+      -También utilizamos el Trie para almacenar las palabras. Se haría una búsqueda lineal de las palabras y por cada palabra aplicaría el algoritmo de Booyer Moore para encontrar el patrón especificado en la lista de palabras.
+      
+      ![image](https://user-images.githubusercontent.com/82919499/205085885-dc51d3f8-9bff-46c6-8c4f-7bb21a51c05d.png)
+
 
    ## Dataset utilizado
 
