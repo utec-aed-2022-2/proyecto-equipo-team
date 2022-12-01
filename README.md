@@ -71,7 +71,7 @@ Consideraciones:
     4. Minimo valor de: Heap
           -Para los últimos 2 casos la estructura heap es la más indicada de todas ya que la forma del maxheap y del minheap mantienen en una raiz(root) al valor mayor y menor, respectivamente. Lo que da una complejidad de O(1).
           
-         ![image](https://user-images.githubusercontent.com/82919499/205086378-6b78018b-5efb-4796-9c15-fa602556b5dd.png)
+         ![image](https://user-images.githubusercontent.com/82919499/205087704-611831d1-5de4-43d2-a9b7-48b9461b0719.png)
 
     5. Inicia con:
       -Para encontrar palabras que inicien con un determinado texto ingresado por el usuario. Utilizamos un Trie (Prefix Tree) para que la complejidad de búsqueda sea en el peor caso O(m), donde m es el tamaño del texto a buscar.
