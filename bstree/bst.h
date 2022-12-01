@@ -3,11 +3,10 @@
 
 #include "iterator.h"
 #include <string>
+#include "Tuple.h"
 using namespace std;
 #include "bst_node.h"
 
-// #include <stack>
-// #include <queue>
 template <typename T>
 class BSTree
 {
@@ -15,10 +14,10 @@ public:
     typedef BSTIterator<T> iterator;
 
 private:
-    NodeBT<T> *root;
     string inOrder_string;
 
 public:
+    NodeBT<T> *root;
     BSTree()
     {
         root = nullptr;
@@ -28,9 +27,28 @@ public:
         return this->find(X);
     }
 
-    void insert(T value)
+    void insert(int indice, T value) // recibe tupla
     {
-        insert(this->root, value);
+        insert(this->root, indice, value);
+    }
+
+    void searchKey(Node<T>* &curr, int key, Node<T>* &parent)
+    {
+        // traverse the tree and search for the key
+        while (curr != nullptr && curr->data != key)
+        {
+            // update the parent to the current node
+            parent = curr;
+
+            // if the given key is less than the current node, go to the left subtree;
+            // otherwise, go to the right subtree
+            if (key < curr->data) {
+                curr = curr->left;
+            }
+            else {
+                curr = curr->right;
+            }
+        }
     }
 
     bool find(T value)
@@ -57,22 +75,27 @@ public:
         }
     }
 
-    void range_search(int k1, int k2){
-        range_search(this->root, k1, k2);
+    ForwardList<int> range_search(ForwardList<int>& indexes, int k1, int k2){
+        range_search(indexes, this->root, k1, k2);
+        return indexes;
     }
 
-    void range_search(NodeBT<T> *root, int k1, int k2)
+    ForwardList<int>& range_search(ForwardList<int>& indexes, NodeBT<T> *root, int k1, int k2)
     {
         if ( NULL == root )
-            return;
-        
+            return indexes;
+
         if ( k1 < root->data )
-            range_search(root->left, k1, k2);
+            range_search(indexes, root->left, k1, k2);
         
-        if ( k1 <= root->data && k2 >= root->data )
-            cout<<root->data<<" - ";
-        
-        range_search(root->right, k1, k2);
+        if ( k1 <= root->data && k2 >= root->data ){
+//            cout << root->data << endl;
+            indexes.push_back(root->indice);
+//            cout<<root->data<<" - ";
+        }
+
+        range_search(indexes, root->right, k1, k2);
+        return indexes;
     }
 
     void displayInOrder(NodeBT<T> *node, string &value)
@@ -203,8 +226,9 @@ public:
                     if(trav->right->data < trav->data){
                     // cout << "so far1\n" << endl;
                     T aux = trav->right->data;
+                    int aux_index = trav->right->indice;
                     trav->right = nullptr;
-                    insert(aux);
+                    insert(aux_index, aux);
                     // cout << "so far2\n" << endl;
                     }
                 }
@@ -212,6 +236,67 @@ public:
             }
         }
     }
+
+    NodeBT<T>* minValueNode(NodeBT<T>* node)
+    {
+        struct NodeBT<T>* current = node;
+
+        /* loop down to find the leftmost leaf */
+        while (current && current->left != NULL)
+            current = current->left;
+        return current;
+    }
+
+    NodeBT<T>* deleteNode(NodeBT<T>* root, int key)
+    {
+        // base case
+        if (root == NULL)
+            return root;
+
+        // If the key to be deleted is
+        // smaller than the root's
+        // key, then it lies in left subtree
+        if (key < root->data)
+            root->left = deleteNode(root->left, key);
+
+            // If the key to be deleted is
+            // greater than the root's
+            // key, then it lies in right subtree
+        else if (key > root->data)
+            root->right = deleteNode(root->right, key);
+
+            // if key is same as root's key, then This is the node
+            // to be deleted
+        else {
+            // node has no child
+            if (root->left == NULL and root->right == NULL)
+                return NULL;
+
+                // node with only one child or no child
+            else if (root->left == NULL) {
+                struct NodeBT<T>* temp = root->right;
+                free(root);
+                return temp;
+            }
+            else if (root->right == NULL) {
+                struct NodeBT<T>* temp = root->left;
+                free(root);
+                return temp;
+            }
+
+            // node with two children: Get the inorder successor
+            // (smallest in the right subtree)
+            struct NodeBT<T>* temp = minValueNode(root->right);
+
+            // Copy the inorder successor's content to this node
+            root->data = temp->data;
+
+            // Delete the inorder successor
+            root->right = deleteNode(root->right, temp->data);
+        }
+        return root;
+    }
+
     bool isBalanced()
     {
         return isBalanced(this->root);
@@ -298,20 +383,21 @@ public:
 
 private:
 
-    NodeBT<T> *insert(NodeBT<T> *&node, T value)
+    NodeBT<T> *insert(NodeBT<T> *&node, int indice, T value) // value is a tuple
     {
         if (node == nullptr)
         {
             node = new NodeBT<T>();
             node->data = value;
+            node->indice = indice;
             node->left = node->right = nullptr;
             return node;
         }
         if (value < node->data)
-            return insert(node->left, value);
+            return insert(node->left, indice, value);
 
         if (value > node->data)
-            return insert(node->right, value);
+            return insert(node->right, indice, value);
         return 0;
     }
 
