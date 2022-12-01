@@ -1,9 +1,9 @@
-#ifndef MAXHEAP_H
-#define MAXHEAP_H
+#ifndef CRYPTOCHAIN_MAXHEAP_H
+#define CRYPTOCHAIN_MAXHEAP_H
 
 #include <vector>
 #include <algorithm>
-#include <iostream> 
+#include <iostream>
 using namespace std;
 
 template <typename T>
@@ -64,15 +64,20 @@ private:
             }
         }
     }
-    vector<T> elements;
+
 
 public:
+    vector<T> elements;
     MaxHeap() = default;
+
+    void clear(){
+        this->elements.clear();
+    }
 
     void push(T data)
     {
         elements.push_back(data);
-        cout << elements.size() << "a\n";
+//        cout << elements.size() << "a\n";
         heapify_up(elements, elements.size() - 1);
     }
     void pop()
@@ -94,4 +99,4 @@ public:
     }
 };
 
-#endif
+#endif //CRYPTOCHAIN_MAXHEAP_H
