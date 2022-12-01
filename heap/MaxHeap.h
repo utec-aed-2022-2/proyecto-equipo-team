@@ -84,7 +84,7 @@ public:
     void push(T data)
     {
         elements.push_back(data);
-        cout << elements.size() << "a\n";
+//        cout << elements.size() << "a\n";
         heapify_up(elements, elements.size() - 1);
     }
     void pop()

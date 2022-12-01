@@ -358,11 +358,11 @@ void query(Blockchain &cryptochain){
                     ingrese_0_para_salir();
                     break;
                 case 3:
-                    // TODO
+                    cryptochain.inicia_con();
                     ingrese_0_para_salir();
                     break;
                 case 4:
-                    // TODO
+                    cryptochain.contenido_en();
                     ingrese_0_para_salir();
                     break;
                 case 5:

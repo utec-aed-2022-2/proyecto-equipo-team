@@ -87,9 +87,6 @@ public:
         ForwardList<Transaction> trans = new_block.transactions;
         for(int i = 1 ; i <= trans.size() ; i++){
             int index = trans[i].index;
-//            Tuple<long> aux1(index, trans[i].tiempo);
-//            Tuple<float> aux2(index, trans[i].number);
-//            this->bstree_tiempo->insert(index, trans[i].tiempo);
             this->bstree_number->insert(index, trans[i].number);
         }
     }
@@ -107,8 +104,9 @@ public:
         ForwardList<Transaction> trans = new_block.transactions;
         for (int i = 1; i <= trans.size(); i++)
         {
-//            this->strie_str1->insert();
-//            this->strie_str2->insert();
+            // send tuple to keep index
+            this->strie_str1->insert(trans[i].index, trans[i].str1);
+            this->strie_str2->insert(trans[i].index, trans[i].str2);
         }
     }
 
@@ -171,6 +169,7 @@ public:
         add_to_bstrees(new_block);
         add_to_maxheaps(new_block);
         add_to_minheaps(new_block);
+        add_to_trie(new_block);
         add_to_hash(new_block);
         display_block(new_block);
         size++;
@@ -394,7 +393,126 @@ public:
                         ForwardList<int> indices;
                         auto start2 = chrono::high_resolution_clock::now();
                         this->bstree_tiempo->range_search(indices, x, y);
-                        auto end2 = chrono::high_resolution_clock::now();    
+                        auto end2 = chrono::high_resolution_clock::now();
+                        show_transactions_by_index(indices);
+                        calculate_time(start2, end2);
+                        ingrese_0_para_salir();
+                        break;
+                    }
+                    default:
+                        cout << "error in opcion " << endl;
+                        ingrese_0_para_salir();
+                        break;
+                }
+            }
+        } while(repetir);
+    }
+
+    void inicia_con(){
+        int opcion;
+        bool repetir = true;
+        do{
+            Clear();
+            cout << "\n\n        Choose an attribute: " << endl;
+            cout << "--------------------"<<endl;
+            cout << "1. str1" << endl;
+            cout << "2. str2" << endl;
+            cout << "0. End" << endl;
+
+            cout << "\nEnter an option: ";
+            cin >> opcion;
+
+            while(opcion != 0 and opcion != 1 and opcion != 2){
+                cerr << endl << "Enter a valid option";
+                cout << "\nEnter an option: ";
+                cin >> opcion;
+            }
+            if (opcion == 0){
+                repetir = false;
+            } else {
+                string x;
+                Clear();
+                cout << "\n\n        Enter a char or string : " << endl;
+                cout << "--------------------"<<endl;
+                cout << "\n starts with: ";
+                cin >> x;
+                Clear();
+                switch(opcion){
+                    case 1:{
+                        ForwardList<int> indices;
+                        auto start1 = chrono::high_resolution_clock::now();
+                        indices = this->strie_str1->starts_with(x);
+                        auto end1 = chrono::high_resolution_clock::now();
+                        show_transactions_by_index(indices);
+                        calculate_time(start1, end1);
+                        ingrese_0_para_salir();
+                        break;
+                    }
+                    case 2:{
+                        ForwardList<int> indices;
+                        auto start2 = chrono::high_resolution_clock::now();
+                        indices = this->strie_str2->starts_with(x);
+                        auto end2 = chrono::high_resolution_clock::now();
+                        show_transactions_by_index(indices);
+                        calculate_time(start2, end2);
+                        ingrese_0_para_salir();
+                        break;
+                    }
+                    default:
+                        cout << "error in opcion " << endl;
+                        ingrese_0_para_salir();
+                        break;
+                }
+            }
+        } while(repetir);
+    }
+
+    void contenido_en(){
+        int opcion;
+        bool repetir = true;
+        do{
+            Clear();
+            cout << "\n\n        Choose an attribute: " << endl;
+            cout << "--------------------"<<endl;
+            cout << "1. str1" << endl;
+            cout << "2. str2" << endl;
+            cout << "0. End" << endl;
+
+            cout << "\nEnter an option: ";
+            cin >> opcion;
+
+            while(opcion != 0 and opcion != 1 and opcion != 2){
+                cerr << endl << "Enter a valid option";
+                cout << "\nEnter an option: ";
+                cin >> opcion;
+            }
+            if (opcion == 0){
+                repetir = false;
+            } else {
+                string x;
+                Clear();
+                cout << "\n\n        Enter a char or string : " << endl;
+                cout << "--------------------"<<endl;
+                cout << "\n starts with: ";
+                cin >> x;
+                Clear();
+                switch(opcion){
+                    case 1:{
+                        ForwardList<int> indices;
+                        auto start1 = chrono::high_resolution_clock::now();
+                        indices = this->strie_str1->contained_in(x);
+                        auto end1 = chrono::high_resolution_clock::now();
+                        show_transactions_by_index(indices);
+                        calculate_time(start1, end1);
+                        ingrese_0_para_salir();
+                        break;
+                    }
+                    case 2:{
+                        ForwardList<int> indices;
+                        auto start2 = chrono::high_resolution_clock::now();
+                        indices = this->strie_str2->contained_in(x);
+                        auto end2 = chrono::high_resolution_clock::now();
+                        show_transactions_by_index(indices);
                         calculate_time(start2, end2);
                         ingrese_0_para_salir();
                         break;
