@@ -81,14 +81,25 @@ public:
         char str[20];
         display(strings, estr, root, str, 0);
         for(int i = 1 ; i <= strings.size() ; i++){
-            testIntuitivo(x, strings[i]);
-//            if(indices.size() != 0) {
-//                for (int j = 0; j < indices.size(); j++) {
-//                    cout << x[indices[j]];
-//                }
-//                cout << endl;
-//                cout << indices << endl;
+//            testIntuitivo(x, strings[i]);
+//            for(int j = 0 ; j < strings[i].size() ; j++){
+            if(match(x, strings[i])){
+                cout << strings[i] << endl;
+            }
 //            }
+        }
+    }
+
+    bool match(string x, string y){
+        int counter1 = 0;
+        for(int i = 0 ; i < x.size() ; i++){
+            while(y[counter1] == x[i]){
+                if(counter1 == y.size() - 1){
+                    return true;
+                }
+                counter1++;
+            }
+            counter1 = 0;
         }
     }
 
