@@ -7,8 +7,8 @@
 #include <chrono>
 #include <ctime>
 #include "Tuple.h"
-#include "heap/MaxHeap.h"
-#include "heap/MinHeap.h"
+#include "heaps/MaxHeap.h"
+#include "heaps/MinHeap.h"
 #include "hash/hash.h"
 #include "trie/simpletrie.h"
 using namespace std::chrono;
