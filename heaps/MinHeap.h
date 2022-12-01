@@ -1,9 +1,9 @@
-#ifndef MINHEAP_H
-#define MINHEAP_H
+#ifndef CRYPTOCHAIN_MINHEAP_H
+#define CRYPTOCHAIN_MINHEAP_H
 
 #include <vector>
 #include <algorithm>
-#include <iostream> 
+#include <iostream>
 using namespace std;
 
 template <typename T>
@@ -22,7 +22,7 @@ private:
         }
         if (right(p) > vec.size() - 1 && left(p) < vec.size())
         {
-            if (vec[p] < vec[left(p)])
+            if (vec[p] > vec[left(p)])
             {
                 T temp = vec[p];
                 T val = vec[left(p)];
@@ -57,7 +57,7 @@ private:
         int par = parent(p);
         if (par >= 0)
         {
-            if (vec[p] > vec[par])
+            if (vec[p] < vec[par])
             {
                 swap(vec[par], vec[p]);
                 heapify_up(vec, par);
@@ -69,10 +69,14 @@ private:
 public:
     MinHeap() = default;
 
+    void clear(){
+        this->elements.clear();
+    }
+
     void push(T data)
     {
         elements.push_back(data);
-        cout << elements.size() << "a\n";
+//        cout << elements.size() << "a\n";
         heapify_up(elements, elements.size() - 1);
     }
     void pop()
@@ -94,4 +98,5 @@ public:
     }
 };
 
-#endif
+
+#endif //CRYPTOCHAIN_MINHEAP_H
