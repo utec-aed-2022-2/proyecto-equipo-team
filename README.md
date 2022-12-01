@@ -82,19 +82,27 @@ Las estructuras de datos implementadas por nuestra cuenta fueron las siguientes:
    
    ## Tabla comparativa del Blockchain con Indices VS sin indices
    
+   | Blockchain | Insert | search | 
+   | --- | --- | --- |
+   | Con índices | Complejidad O(n) | Complejidad O(1) |
+   | Sin índices | Complejidad O(n) | Complejidad O(n) |
+   
    ## Estructuras de datos usados para los diferentes criterios de busqueda
    
     1. Igual a X: Hash table
       - Como se hara una simple busqueda de valor optamos por este metodo por la rapides al acceso a datos teniendo una complejidad de O(n).
+         
          Diagrama:
       
     2. Entre X y Y: BST
       - Con el recorrido por rango se decidio por el BST ya que este se ordena al almacenar solo bastaria con un recorrido desde el valor inicial hasta el final que           busquemos con una complejidad de O(n).
+         
          Diagrama:
       
     3. Maximo valor de: Heap 
     4. Minimo valor de: Heap
       - Para los ultimos 2 casos la estructura heap es la mas indicada de todas ya que la forma del maxheap y del minheap mantienen en un raiz(root) al valor mayor y           menor respectivamente proporcionandonos una complejidad de O(1).
+         
          Diagrama:
 
    ## Dataset utilizado
@@ -103,7 +111,7 @@ Las estructuras de datos implementadas por nuestra cuenta fueron las siguientes:
    
 # Conclusion
 
-   En conclucion la Blockchain es un conjunto de bloques que gracias al fowardlist estan enlazados entre si y que permiten almacenar un conjunto de transacciones. Todo esto asegurado gracias a el algortimo de ecriptación sha-256. La visualizacion y manejo de la blockchain es por medio de la terminal que permite al usuario realizar diferentes operaciones .Finalmente, para poder ver las diferentes transacciones se han logrado realizar diferentes tipos de busqueda aplicando diferentes estructuras de datos(hash, BST, Heap) buscando la mayor eficiencia posible en cada uno.
+   En conclucion la Blockchain es un conjunto de bloques que permiten almacenar un conjunto de transacciones. Todo esto asegurado gracias a el algortimo de ecriptación sha-256. En la recreacion de esta La visualizacion nosotros pudimos enlazar los bloques gracias al fowardlist y crear un manejo de la blockchain es por medio de la terminal que permite al usuario realizar diferentes operaciones .Ademas, para poder ver las diferentes transacciones se han logrado realizar diferentes tipos de busqueda aplicando diferentes estructuras de datos(hash, BST, Heap) buscando la mayor eficiencia posible en cada uno. Finalmente, podemos notar como esta implementación es algo compleja solo con el uso de unos pocos datos y que al momento que estos vvan aumentando la misma complejidad va incrementando.
 
 
 # Listas actividades para la parte 1
