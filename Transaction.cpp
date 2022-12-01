@@ -1,117 +1,52 @@
 #include <string>
 #include <sstream>
 #include <iostream>
+#include <ctime>
 using namespace std;
 
-
-struct Time{
-    int year;
-    int month;
-    int day;
-
-    Time(){
-        this->year = 0;
-        this->month = 0;
-        this->day = 0;
-    }
-
-    void short_display(){
-        cout << year << " | " << month << " | " << day << " | ";
-    }
-
-    void display() const{
-        cout << "year: " << year << endl;
-        cout << "month: " << month << endl;
-        cout << "day: " << day << endl;
-    }
-
-    string get_data_as_string() const{
-        return (to_string(year) + to_string(month) + to_string(day));
-    }
-
-    explicit Time(const string& field){ // bc stringstream returns a string, so we do the work of separate the values here.
-        stringstream sso(field);
-        string year_;
-        string month_;
-        string day_;
-        getline(sso, year_, '-');
-        getline(sso, month_, '-');
-        getline(sso, day_); // delimiter by default is '\n' newline
-        this->year = stoi(year_);
-        this->month = stoi(month_);
-        this->day = stoi(day_);
-    }
-};
-
 struct Transaction{
-    Time date; //opening time (year, month, day) //bc we store data by day
-    float open; // price in open time
-    float high; // highest price in the period (in that day in binance)
-    float lowest; //lowest price in the period (in that day in binance)
-    float close; // closing price
-    float volume; // number of units traded in the market in that period (in that day in binance)
-    double close_time; // closing time [large number formatted]
-    double quote_asset_volume; // en cristiano, 2 monedas se cotizan (una contra la otra), en este caso bitcoin contra USTD (stable cryptocurrency based on the US dollar), el resultado es el volumen de este segundo (USTD)... creo...
-    int number_of_trades; // number of trades :)
-    double taker_buy_base_asset_volume; // this quantity is expressed as the amount of coins that were received.
-    double taker_buy_quote_asset_volume; // this quantity is expressed as the amount of the second part of the pair (USTD) that were paid.
-    // float ignore; // ignore this field :)
+    int index = 0;
+    string str1;
+    string str2;
+    float number;
+    long tiempo;
 
-    Transaction(){ // onnly for genesis
-        Time date_;
-        date = date_;
-        open = 0;
-        high = 0;
-        lowest = 0;
-        close = 0;
-        volume = 0;
-        close_time = 0;
-        quote_asset_volume = 0;
-        number_of_trades = 0;
-        taker_buy_base_asset_volume = 0;
-        taker_buy_quote_asset_volume = 0;
+    Transaction(){ // only for genesis
+        index = 0;
+        str1 = " - ";
+        str2 = " - ";
+        number = 0;
+        tiempo = 0;
+    }
+
+    int get_index(){
+        return this->index;
     }
 
     string get_data_as_string() const{
-        return (date.get_data_as_string() + to_string(open) + to_string(high) + to_string(lowest) + to_string(close) + to_string(volume) + to_string(close_time) + to_string(quote_asset_volume) + to_string(number_of_trades) + to_string(taker_buy_base_asset_volume) + to_string(taker_buy_quote_asset_volume));
+        return (to_string(number) + to_string(tiempo) + str1 + str2);
     }
 
-    void create_transaction(){
-        Time new_date;
-        cout << "year: "; cin >> new_date.year;
-        cout << "month: "; cin >> new_date.month;
-        cout << "day: "; cin >> new_date.day;
-        date = new_date;
-        cout << "open: "; cin >> open;
-        cout << "high: "; cin >> high;
-        cout << "lowest: "; cin >> lowest;
-        cout << "close: "; cin >> close;
-        cout << "volume: "; cin >> volume;
-        cout << "close_time: "; cin >> close_time;
-        cout << "quote_asset_volume: "; cin >> quote_asset_volume;
-        cout << "number_of_trades: "; cin >> number_of_trades;
-        cout << "taker_buy_base_asset_volume: "; cin >> taker_buy_base_asset_volume;
-        cout << "taker_buy_quote_asset_volume: "; cin >> taker_buy_quote_asset_volume;
+    void create_transaction(int& INDICE){
+//        index = this->index + 1;
+        index = INDICE;
+        INDICE++;
+        cout << "str1: "; cin >> str1;
+        cout << "str2: "; cin >> str2;
+        cout << "number: "; cin >> number;
+        cout << "tiempo: "; cin >> tiempo;
         cout << endl;
     }
 
     void short_display(){
-        date.short_display();
-        cout << open << " | " << high << " | " << lowest << " | " << close << " | " << volume << " | " << close_time << " | " << number_of_trades << endl;
+        cout << str1 << " | " << str2 << " | " << number << " | " << tiempo << endl;
     }
 
     void display(){
-        date.display();
-        cout << "open: " << open << endl;
-        cout << "high: " << high << endl;
-        cout << "lowest: " << lowest << endl;
-        cout << "close: " << close << endl;
-        cout << "volume: " << volume << endl;
-        cout << "close_time: " << close_time << endl;
-        cout << "quote_asset_volume: " << quote_asset_volume << endl;
-        cout << "number_of_trades: " << number_of_trades << endl;
-        cout << "taker_buy_base_asset_volume: " << taker_buy_base_asset_volume << endl;
-        cout << "taker_buy_quote_asset_volume: " << taker_buy_quote_asset_volume << endl;
+        cout << "str1: " << str1 << endl;
+        cout << "str2: " << str2 << endl;
+        cout << "number: " << number << endl;
+        cout << "tiempo: " << tiempo << endl;
         cout << endl;
     }
 

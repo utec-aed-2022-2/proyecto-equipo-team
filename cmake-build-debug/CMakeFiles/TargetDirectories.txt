@@ -1,0 +1,3 @@
+/Users/neozapata/Documents/programming/CLionProjects/cryptochain/cmake-build-debug/CMakeFiles/cryptochain.dir
+/Users/neozapata/Documents/programming/CLionProjects/cryptochain/cmake-build-debug/CMakeFiles/edit_cache.dir
+/Users/neozapata/Documents/programming/CLionProjects/cryptochain/cmake-build-debug/CMakeFiles/rebuild_cache.dir

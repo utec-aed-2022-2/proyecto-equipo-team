@@ -1,0 +1,14 @@
+# ninja log v5
+9	3836	1669864119870755763	CMakeFiles/cryptochain.dir/block.cpp.o	a96c85189d7ce731
+8	6186	1669869576344435354	CMakeFiles/cryptochain.dir/main.cpp.o	71df185fdca6bf44
+2941	5441	1669849873316881125	CMakeFiles/cryptochain.dir/sha256.cpp.o	e6470981c91f3cbb
+3555	5598	1669859776388302097	CMakeFiles/cryptochain.dir/Transaction.cpp.o	70c68bbbb8226459
+5	5420	1669869575622198070	CMakeFiles/cryptochain.dir/blockchain.cpp.o	cc1192cf97192337
+6186	6361	1669869576573304240	cryptochain	c9dd1d46611c07f7
+14	3625	1669871890771921346	CMakeFiles/cryptochain.dir/blockchain.cpp.o	cc1192cf97192337
+26	4393	1669871891549465098	CMakeFiles/cryptochain.dir/main.cpp.o	71df185fdca6bf44
+4393	4556	1669871891722830088	cryptochain	c9dd1d46611c07f7
+3	6126	1669872715270894151	CMakeFiles/cryptochain.dir/blockchain.cpp.o	cc1192cf97192337
+3	4839	1669872734182496381	CMakeFiles/cryptochain.dir/blockchain.cpp.o	cc1192cf97192337
+3	6145	1669872735491151862	CMakeFiles/cryptochain.dir/main.cpp.o	71df185fdca6bf44
+6145	6331	1669872735687774677	cryptochain	c9dd1d46611c07f7

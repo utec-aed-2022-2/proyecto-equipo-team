@@ -7,6 +7,9 @@ using namespace std;
 
 class Block{
 public:
+    // aux
+    int prev_index = 1;
+
     bool valid = true;
     int index{};
     size_t nonce{};
@@ -15,9 +18,9 @@ public:
     ForwardList<Transaction> transactions;
 
     void display_transactions(){
-        cout << "Index | Year | Month | Day | Open | High | Lowest | Close | Volume | Close time | Number of trades" << endl;
+        cout << "   str1 | str2 | number | tiempo" << endl;
         for(int i = 1 ; i <= transactions.size() ; i++){
-            cout << i << " |     ";
+            cout << i << ") ";
             transactions[i].short_display();
         }
     }
@@ -30,6 +33,12 @@ public:
         this->prev_hash_code = prev_hash_code;
         this->hash_code = generate_hash_code();
         this->valid = true;
+    }
+
+    void insert_transactions(ForwardList<Transaction>& trans){
+        for(int i = 1 ; i <= trans.size() ; i++){
+            this->transactions.push_back(trans[i]);
+        }
     }
 
     string generate_hash_code(){
@@ -45,7 +54,7 @@ public:
         return &(hash_code);
     }
 
-    void update(){
+    void update_(){
         string former_hash_code = this->hash_code;
         string new_hash_code = this->generate_hash_code();
 
@@ -73,8 +82,8 @@ public:
         this->nonce = nonce_;
     }
 
-    bool proof_of_work(int dificulty) { // method: HashCash
-        switch(dificulty){
+    bool proof_of_work(int difficulty) { // method: HashCash
+        switch(difficulty){
             case 1:{
                 return (this->generate_hash_code().substr(0, 1) == "0");
                 break;

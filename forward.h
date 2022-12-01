@@ -11,7 +11,62 @@ template <typename T>
 class ForwardList : public List<T> {
 private:
     Node<T>* head;
-    int nodes=0;
+    int nodes = 0;
+
+    Node<T>* merge(Node<T>* n1, Node<T>* n2){
+        Node<T>* temp = new Node<T>();
+        Node<T>* merged = temp;
+        Node<T>* ptr = temp;
+        while(n1 != nullptr && n2 != nullptr){
+            if (n1->data <= n2->data){
+                temp->next = n1;
+                n1 = n1->next;
+            }else{
+                temp->next = n2;
+                n2 = n2->next;
+            }
+            temp = temp->next;
+        }
+
+        while(n1 != nullptr){
+            temp->next = n1;
+            n1= n1->next;
+            temp = temp->next;
+        }
+
+        while(n2 != nullptr){
+            temp->next = n2;
+            n2 = n2->next;
+            temp = temp->next;
+        }
+        merged = merged->next;
+        delete ptr;
+        return merged;
+    }
+
+    Node<T>* middle(Node<T>* head){
+        Node<T>* slow = head;
+        Node<T>* fast = head->next;
+
+        while(fast != nullptr && fast->next != nullptr){
+            slow = slow->next;
+            fast = fast->next->next;
+        }
+        return slow;
+    }
+
+    Node<T>* merge_sort(Node<T>* head){
+        if (head == nullptr || head->next == nullptr){
+            return head;
+        }
+        Node<T>* mid_node = this->middle(head);
+        Node<T>* head2 = mid_node->next;
+        mid_node->next = nullptr;
+
+        Node<T>* ans = this->merge(this->merge_sort(head), this->merge_sort(head2));
+
+        return ans;
+    }
 
 public:
     ForwardList() : List<T>() {}
@@ -20,8 +75,12 @@ public:
         // TODO
     }
 
-    T front(){
+    void sort(){
+        if(this->nodes <= 1) return;
+        this->head = this->merge_sort(this->head);
+    }
 
+    T front(){
         return this->head->data;
     }
 
@@ -73,23 +132,44 @@ public:
         this->nodes = this->nodes - 1;
         return result;
     }
+//
+//    T pop_back(){
+//        Node<T>* tempNode = this->head;
+//        T result;
+//        int i = 0;
+//        while (true){
+//            if(i + 2  == this->nodes){
+//                result = tempNode->next->data;
+//                tempNode->next = nullptr;
+//                break;
+//            } else {
+//                tempNode = tempNode->next;
+//            }
+//            i++;
+//        }
+//        this->nodes = this->nodes - 1;
+//        return result;
+//    }
 
     T pop_back(){
-        Node<T>* tempNode = this->head;
-        T result;
-        int i = 0;
-        while (true){
-            if(i + 2  == this->nodes){
-                result = tempNode->next->data;
-                tempNode->next = nullptr;
-                break;
-            } else {
-                tempNode = tempNode->next;
-            }
-            i++;
+        if (this->head == nullptr){
+            throw std::runtime_error("Forward List has no elements");
+        } else if (this->head->next == nullptr){
+            T aux = this->head->data;
+            delete this->head;
+            this->head = nullptr;
+            this->nodes = 0;
+            return aux;
+        }else{
+            Node<T> * temp = head;
+            while (temp->next->next != nullptr)
+                temp = temp->next;
+            T aux = temp->next->data;
+            delete temp->next;
+            temp->next = nullptr;
+            this->nodes--;
+            return aux;
         }
-        this->nodes = this->nodes - 1;
-        return result;
     }
 
     void insert(T data, int pos){

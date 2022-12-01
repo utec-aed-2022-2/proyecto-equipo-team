@@ -1,8 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
-  <component name="CMakePresetLoader"><![CDATA[{
-  "useNewFormat": true
-}]]></component>
+  <component name="CMakePresetLoader">{
+  &quot;useNewFormat&quot;: true
+}</component>
+  <component name="CMakeReloadState">
+    <option name="reloaded" value="true" />
+  </component>
+  <component name="CMakeRunConfigurationManager">
+    <generated>
+      <config projectName="cryptochain" targetName="cryptochain" />
+    </generated>
+  </component>
   <component name="CMakeSettings">
     <configurations>
       <configuration PROFILE_NAME="Debug" ENABLED="true" CONFIG_NAME="Debug" />
@@ -10,7 +18,22 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="18aa212d-4ac4-430c-9182-04dc3537165d" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/main.cpp" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Tuple.h" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/hash/hash.h" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/heap/MaxHeap.h" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/heap/MinHeap.h" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/trie/simpletrie.h" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/trie/trie.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/proyecto_algoritmos.iml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Transaction.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Transaction.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/block.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/block.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/blockchain.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/blockchain.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bstree/bst.h" beforeDir="false" afterPath="$PROJECT_DIR$/bstree/bst.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bstree/bst_node.h" beforeDir="false" afterPath="$PROJECT_DIR$/bstree/bst_node.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/forward.h" beforeDir="false" afterPath="$PROJECT_DIR$/forward.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/main.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/node.h" beforeDir="false" afterPath="$PROJECT_DIR$/node.h" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -20,11 +43,17 @@
   <component name="ClangdSettings">
     <option name="formatViaClangd" value="false" />
   </component>
+  <component name="ExecutionTargetManager" SELECTED_TARGET="CMakeBuildProfile:Debug" />
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
   <component name="MarkdownSettingsMigration">
     <option name="stateVersion" value="1" />
+  </component>
+  <component name="ProjectApplicationVersion">
+    <option name="ide" value="CLion" />
+    <option name="majorVersion" value="2022" />
+    <option name="minorVersion" value="2" />
   </component>
   <component name="ProjectId" id="2G3P0nHrW60Vi67tUeXh485stDb" />
   <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
@@ -39,9 +68,28 @@
     "RunOnceActivity.cidr.known.project.marker": "true",
     "WebServerToolWindowFactoryState": "false",
     "cf.first.check.clang-format": "false",
-    "cidr.known.project.marker": "true"
+    "cidr.known.project.marker": "true",
+    "nodejs_package_manager_path": "npm"
   }
 }]]></component>
+  <component name="RecentsManager">
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$" />
+      <recent name="$PROJECT_DIR$/cmake-build-debug" />
+    </key>
+  </component>
+  <component name="RunManager">
+    <configuration default="true" type="CLionExternalRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" PASS_PARENT_ENVS_2="true">
+      <method v="2">
+        <option name="CLION.EXTERNAL.BUILD" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="cryptochain" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="cryptochain" TARGET_NAME="cryptochain" CONFIG_NAME="Debug" RUN_TARGET_PROJECT_NAME="cryptochain" RUN_TARGET_NAME="cryptochain">
+      <method v="2">
+        <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
+      </method>
+    </configuration>
+  </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
@@ -51,6 +99,7 @@
       <option name="presentableId" value="Default" />
       <updated>1665614074117</updated>
       <workItem from="1665614076510" duration="154000" />
+      <workItem from="1669839261686" duration="29444000" />
     </task>
     <servers />
   </component>
